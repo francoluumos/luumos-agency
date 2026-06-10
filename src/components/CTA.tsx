@@ -1,14 +1,16 @@
 import { useTranslation } from 'react-i18next'
 import { Spark } from './icons'
 import { COMPANY } from '../legal/company'
+import { useReveal } from '../hooks/useReveal'
 import './Sections.css'
 
 export default function CTA() {
   const { t } = useTranslation()
+  const panelRef = useReveal<HTMLDivElement>()
 
   return (
     <section className="cta">
-      <div className="cta__panel">
+      <div className="cta__panel reveal" ref={panelRef}>
         <Spark className="cta__spark" gradientId="cta-spark" />
         <h2 className="cta__title">{t('cta.title')}</h2>
         <p className="cta__sub">{t('cta.sub')}</p>

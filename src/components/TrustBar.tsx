@@ -1,9 +1,11 @@
 import { useTranslation } from 'react-i18next'
+import { useReveal } from '../hooks/useReveal'
 import './Sections.css'
 
 export default function TrustBar() {
   const { t } = useTranslation()
   const items = t('trust.items', { returnObjects: true }) as unknown as string[]
+  const ref = useReveal<HTMLDivElement>()
 
   const track = (dup = false) => (
     <div className="trust__track" {...(dup ? { 'aria-hidden': true } : {})}>
@@ -17,7 +19,7 @@ export default function TrustBar() {
 
   return (
     <section className="trust" aria-label="Industries served">
-      <div className="trust__inner">
+      <div className="trust__inner reveal" ref={ref}>
         <span className="trust__label">{t('trust.label')}</span>
         {/* Desktop: tracks collapse (display:contents) into one centered wrap.
             Mobile: both tracks form a seamless right→left marquee. */}

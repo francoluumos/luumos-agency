@@ -253,11 +253,14 @@
   border-radius: var(--r-pill);
   background: var(--brand-gradient);
   box-shadow: 0 16px 36px -12px var(--glow-blue);
-  transition: transform 0.25s var(--ease-out-quint), box-shadow 0.25s ease;
+  transition: transform 0.16s var(--ease-out-quint), box-shadow 0.25s ease;
 }
 .cta__btn:hover {
   transform: translateY(-2px);
   box-shadow: 0 22px 44px -12px var(--glow-bright);
+}
+.cta__btn:active {
+  transform: scale(0.97);
 }
 .cta__note {
   margin-top: 16px;

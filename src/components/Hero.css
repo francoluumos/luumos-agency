@@ -97,11 +97,14 @@
   border-radius: var(--r-pill);
   background: var(--brand-gradient);
   box-shadow: 0 14px 34px -12px var(--glow-blue);
-  transition: transform 0.25s var(--ease-out-quint), box-shadow 0.25s ease;
+  transition: transform 0.16s var(--ease-out-quint), box-shadow 0.25s ease;
 }
 .hero__cta:hover {
   transform: translateY(-2px);
   box-shadow: 0 20px 42px -12px var(--glow-bright);
+}
+.hero__cta:active {
+  transform: scale(0.97);
 }
 .hero__demo {
   display: inline-flex;
@@ -114,11 +117,14 @@
   border-radius: var(--r-pill);
   border: 1px solid var(--hairline);
   background: var(--surface);
-  transition: border-color 0.25s ease, transform 0.25s var(--ease-out-quint);
+  transition: border-color 0.25s ease, transform 0.16s var(--ease-out-quint);
 }
 .hero__demo:hover {
   transform: translateY(-2px);
   border-color: color-mix(in srgb, var(--brand-blue) 30%, var(--hairline));
+}
+.hero__demo:active {
+  transform: scale(0.97);
 }
 .hero__demo-play {
   display: grid;
