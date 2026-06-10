@@ -62,6 +62,14 @@
   align-items: center;
   gap: 10px 22px;
 }
+/* Desktop: tracks dissolve so their items flow into the centered wrap above;
+   the duplicate track is hidden. (Mobile re-enables both as a marquee.) */
+.trust__track {
+  display: contents;
+}
+.trust__track[aria-hidden] {
+  display: none;
+}
 .trust__item {
   display: inline-flex;
   align-items: center;
@@ -310,6 +318,18 @@
 .footer__col a:hover {
   color: var(--brand-blue);
 }
+/* a.footer__link--icon to outrank `.footer__col a { display:block }` and actually flex */
+.footer__col a.footer__link--icon {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.footer__link-icon {
+  width: 18px;
+  height: 18px;
+  flex: none;
+  color: var(--brand-blue);
+}
 .footer__bottom {
   max-width: var(--maxw);
   margin: 48px auto 0;
@@ -322,18 +342,6 @@
   gap: 12px;
   font-size: 0.88rem;
   color: var(--muted);
-}
-.footer__bottom-right {
-  display: flex;
-  align-items: center;
-  gap: 22px;
-}
-.footer__legal {
-  display: flex;
-  gap: 22px;
-}
-.footer__legal a:hover {
-  color: var(--ink);
 }
 
 /* ============================================================
@@ -360,5 +368,41 @@
   }
   .footer__inner {
     gap: 32px;
+  }
+
+  /* Trust bar → seamless right→left marquee on mobile */
+  .trust__inner {
+    flex-direction: column;
+    gap: 14px;
+  }
+  .trust__items {
+    flex-wrap: nowrap;
+    width: 100%;
+    overflow: hidden;
+    gap: 0;
+    -webkit-mask-image: linear-gradient(to right, transparent, #000 12%, #000 88%, transparent);
+    mask-image: linear-gradient(to right, transparent, #000 12%, #000 88%, transparent);
+  }
+  .trust__track {
+    display: flex;
+    flex: 0 0 auto;
+    align-items: center;
+    gap: 30px;
+    padding-right: 30px;
+    animation: trust-marquee 22s linear infinite;
+  }
+  .trust__track[aria-hidden] {
+    display: flex;
+  }
+}
+
+@keyframes trust-marquee {
+  to {
+    transform: translateX(-100%);
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .trust__track {
+    animation: none;
   }
 }

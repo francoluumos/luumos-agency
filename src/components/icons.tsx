@@ -62,6 +62,68 @@ export function Mail(props: IconProps) {
   )
 }
 
+export function Phone(props: IconProps) {
+  return (
+    <svg {...base} {...props}>
+      <path
+        d="M6.5 3.5h3l1.4 4-2 1.3a11.5 11.5 0 0 0 5 5l1.3-2 4 1.4v3a2 2 0 0 1-2.1 2A15.5 15.5 0 0 1 4.5 5.6a2 2 0 0 1 2-2.1Z"
+        {...stroke}
+      />
+    </svg>
+  )
+}
+
+export function LinkedIn(props: IconProps) {
+  return (
+    <svg {...base} {...props}>
+      <rect x="3.5" y="3.5" width="17" height="17" rx="3.5" {...stroke} />
+      <path d="M8 10.4v6M8 7.5v.01M11.6 16.4v-6M11.6 13c0-1.5 1-2.6 2.5-2.6S16.5 11.5 16.5 13v3.4" {...stroke} />
+    </svg>
+  )
+}
+
+/* ---- Filled glyphs (solid, currentColor) — used in the footer contact column ---- */
+export function CalendarFill(props: IconProps) {
+  return (
+    <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden {...props}>
+      <path d="M7 2.5a1 1 0 0 1 1 1V4h8v-.5a1 1 0 1 1 2 0V4h.5A2.5 2.5 0 0 1 21 6.5V8H3V6.5A2.5 2.5 0 0 1 5.5 4H6v-.5a1 1 0 0 1 1-1Z" />
+      <path d="M3 9.5h18v8a2.5 2.5 0 0 1-2.5 2.5h-13A2.5 2.5 0 0 1 3 17.5v-8Z" />
+      <circle cx="8.4" cy="13.4" r="1.15" fill="var(--surface)" />
+      <circle cx="12" cy="13.4" r="1.15" fill="var(--surface)" />
+      <circle cx="15.6" cy="13.4" r="1.15" fill="var(--surface)" />
+    </svg>
+  )
+}
+
+export function MailFill(props: IconProps) {
+  return (
+    <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden {...props}>
+      <path d="M3 7.2a2.5 2.5 0 0 1 2.5-2.5h13A2.5 2.5 0 0 1 21 7.2v.25l-9 5.1-9-5.1V7.2Z" />
+      <path d="M21 9.55V16.8a2.5 2.5 0 0 1-2.5 2.5h-13A2.5 2.5 0 0 1 3 16.8V9.55l8.5 4.82a1 1 0 0 0 1 0L21 9.55Z" />
+    </svg>
+  )
+}
+
+export function PhoneFill(props: IconProps) {
+  return (
+    <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden {...props}>
+      <path d="M6.6 3h2.9a1 1 0 0 1 .98.79l.86 3.55a1 1 0 0 1-.5 1.12l-1.66.92a12 12 0 0 0 5.34 5.34l.92-1.66a1 1 0 0 1 1.12-.5l3.55.86a1 1 0 0 1 .79.98v2.9a2 2 0 0 1-2.12 2A16.5 16.5 0 0 1 4.6 5.12 2 2 0 0 1 6.6 3Z" />
+    </svg>
+  )
+}
+
+export function LinkedInFill(props: IconProps) {
+  return (
+    <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden {...props}>
+      <rect x="3" y="3" width="18" height="18" rx="4" />
+      <path
+        fill="var(--surface)"
+        d="M8 10.2H6.1V17H8v-6.8Zm-.95-3.1a1.1 1.1 0 1 0 0 2.2 1.1 1.1 0 0 0 0-2.2ZM17.9 17v-3.9c0-1.9-1.02-2.78-2.38-2.78-1.1 0-1.59.6-1.86 1.03V10.2h-1.9V17h1.9v-3.55c0-.93.66-1.38 1.27-1.38.6 0 1.07.42 1.07 1.35V17h1.8Z"
+      />
+    </svg>
+  )
+}
+
 export function Sheet(props: IconProps) {
   return (
     <svg {...base} {...props}>

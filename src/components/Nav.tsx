@@ -1,6 +1,7 @@
 import { useTranslation } from 'react-i18next'
 import { Spark, Chevron } from './icons'
-import wordmark from '../assets/luumos-wordmark-black.png'
+import { COMPANY } from '../legal/company'
+import wordmark from '../assets/luumos-wordmark-black-transparent.png'
 import './Nav.css'
 
 export default function Nav() {
@@ -31,7 +32,7 @@ export default function Nav() {
         </nav>
 
         <div className="nav__actions">
-          <a className="nav__cta" href="#">
+          <a className="nav__cta" href={COMPANY.bookingUrl} target="_blank" rel="noopener noreferrer">
             {t('nav.cta')}
           </a>
         </div>

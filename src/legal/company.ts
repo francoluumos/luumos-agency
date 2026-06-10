@@ -12,4 +12,6 @@ export const COMPANY = {
   email: 'hello@luumos.ch',
   uid: 'CHE-266.316.179',
   jurisdiction: 'Aarau',
+  /** Google booking link — used by every "Book a consult" CTA. */
+  bookingUrl: 'https://calendar.app.google/wTazZbmi7SjdYbux8',
 } as const

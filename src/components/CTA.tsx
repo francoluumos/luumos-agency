@@ -1,5 +1,6 @@
 import { useTranslation } from 'react-i18next'
 import { Spark } from './icons'
+import { COMPANY } from '../legal/company'
 import './Sections.css'
 
 export default function CTA() {
@@ -11,7 +12,7 @@ export default function CTA() {
         <Spark className="cta__spark" gradientId="cta-spark" />
         <h2 className="cta__title">{t('cta.title')}</h2>
         <p className="cta__sub">{t('cta.sub')}</p>
-        <a className="cta__btn" href="#">
+        <a className="cta__btn" href={COMPANY.bookingUrl} target="_blank" rel="noopener noreferrer">
           {t('cta.button')}
         </a>
         <p className="cta__note">{t('cta.note')}</p>

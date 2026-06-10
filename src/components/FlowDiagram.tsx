@@ -23,6 +23,14 @@ const OUTPUTS = [
   { Icon: Database, x: 1014, y: 430, path: 'M780,260 C876,260 892,430 986,430' },
 ]
 
+/* Travelling pulses live INSIDE the svg (animateMotion) so they ride the wires in
+   viewBox coordinates and scale correctly at every width — including mobile. */
+const PULSES = [
+  ...INPUTS.map((s, i) => ({ path: s.path, kind: 'in', dur: 1.9, begin: i * 0.5 })),
+  ...SPINE.map((s, i) => ({ path: s.path, kind: s.dir, dur: 2.4, begin: 0.4 + i * 0.4 })),
+  ...OUTPUTS.map((s, i) => ({ path: s.path, kind: 'out', dur: 1.9, begin: 0.9 + i * 0.32 })),
+]
+
 const tileStyle = (x: number, y: number, delay: number) =>
   ({
     left: `${(x / 1080) * 100}%`,
@@ -44,7 +52,7 @@ export default function FlowDiagram() {
 
       <div className="flow__stage">
         {/* connectors */}
-        <svg className="flow__svg" viewBox="0 0 1080 480" fill="none" preserveAspectRatio="xMidYMid meet">
+        <svg className="flow__svg" viewBox="0 0 1080 480" fill="none" preserveAspectRatio="none">
           <defs>
             <linearGradient id="flow-grad" x1="0" y1="0" x2="1080" y2="0" gradientUnits="userSpaceOnUse">
               <stop offset="0" stopColor="#1E40AF" />
@@ -60,23 +68,25 @@ export default function FlowDiagram() {
             </g>
           ))}
 
-          {/* junction nodes */}
-          <circle cx="300" cy="260" r="9" className="flow__node" />
-          <circle cx="780" cy="260" r="9" className="flow__node" />
+          {/* travelling pulses — ride the wires, scale with the viewBox */}
+          {PULSES.map((p, i) => (
+            <circle key={`pulse${i}`} r="4" className={`flow__pulse flow__pulse--${p.kind}`} opacity="0">
+              <animateMotion dur={`${p.dur}s`} begin={`${p.begin}s`} repeatCount="indefinite" path={p.path} />
+              <animate
+                attributeName="opacity"
+                dur={`${p.dur}s`}
+                begin={`${p.begin}s`}
+                repeatCount="indefinite"
+                values="0;1;1;0"
+                keyTimes="0;0.12;0.88;1"
+              />
+            </circle>
+          ))}
         </svg>
 
-        {/* travelling pulses */}
-        <div className="flow__pulses" aria-hidden>
-          {INPUTS.map((s, i) => (
-            <span key={`pi${i}`} className="flow__pulse flow__pulse--in" style={{ offsetPath: `path('${s.path}')`, animationDelay: `${i * 0.5}s` }} />
-          ))}
-          {SPINE.map((s, i) => (
-            <span key={`ps${i}`} className={`flow__pulse flow__pulse--${s.dir}`} style={{ offsetPath: `path('${s.path}')`, animationDelay: `${0.4 + i * 0.4}s` }} />
-          ))}
-          {OUTPUTS.map((s, i) => (
-            <span key={`po${i}`} className="flow__pulse flow__pulse--out" style={{ offsetPath: `path('${s.path}')`, animationDelay: `${0.9 + i * 0.32}s` }} />
-          ))}
-        </div>
+        {/* junction nodes — html so they stay circular regardless of svg stretch */}
+        <span className="flow__node-dot" style={tileStyle(300, 260, 0)} />
+        <span className="flow__node-dot" style={tileStyle(780, 260, 0)} />
 
         {/* input tiles */}
         {INPUTS.map((t, i) => (

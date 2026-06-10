@@ -1,5 +1,6 @@
 import { useTranslation } from 'react-i18next'
 import FlowDiagram from './FlowDiagram'
+import { COMPANY } from '../legal/company'
 import './Hero.css'
 
 export default function Hero() {
@@ -22,7 +23,7 @@ export default function Hero() {
         <p className="hero__sub">{t('hero.sub')}</p>
 
         <div className="hero__actions">
-          <a className="hero__cta" href="#">
+          <a className="hero__cta" href={COMPANY.bookingUrl} target="_blank" rel="noopener noreferrer">
             {t('hero.cta')}
           </a>
           <a className="hero__demo" href="#">

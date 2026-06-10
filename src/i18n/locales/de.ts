@@ -83,7 +83,7 @@ export const de: Resources = {
     privacy: 'Datenschutz',
     cols: [
       { h: 'Leistungen', links: ['KI- & Workflow-Automatisierung', 'Massgeschneiderte KI-Agenten', 'Integration & Individualentwicklung', 'Vorgehen'] },
-      { h: 'Unternehmen', links: ['Über uns', 'Referenzen', 'Ressourcen', 'Kontakt'] },
+      { h: 'Unternehmen', links: ['Über uns'] },
       { h: 'Kontakt', links: ['Beratung buchen', 'hello@luumos.ch', '+41 79 845 11 77', 'LinkedIn'] },
     ],
   },

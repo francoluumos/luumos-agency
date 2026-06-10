@@ -81,7 +81,7 @@ export const en = {
     privacy: 'Privacy',
     cols: [
       { h: 'Services', links: ['AI & workflow automation', 'Custom AI agents', 'Integration & custom builds', 'How it works'] },
-      { h: 'Company', links: ['About', 'Work', 'Resources', 'Contact'] },
+      { h: 'Company', links: ['About'] },
       { h: 'Get in touch', links: ['Book a consult', 'hello@luumos.ch', '+41 79 845 11 77', 'LinkedIn'] },
     ],
   },

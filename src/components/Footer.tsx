@@ -1,16 +1,22 @@
 import { useTranslation } from 'react-i18next'
 import { Link, useParams } from 'react-router-dom'
-import { Spark } from './icons'
+import { Spark, CalendarFill, MailFill, PhoneFill, LinkedInFill } from './icons'
 import LanguageSwitcher from './LanguageSwitcher'
 import { isLang } from '../i18n'
-import wordmark from '../assets/luumos-wordmark-black.png'
+import { COMPANY } from '../legal/company'
+import wordmark from '../assets/luumos-wordmark-black-transparent.png'
 import './Sections.css'
 
-function hrefFor(label: string): string {
-  if (label.includes('@')) return `mailto:${label}`
-  if (/^\+?[0-9 ]{6,}$/.test(label)) return `tel:${label.replace(/\s+/g, '')}`
-  return '#'
-}
+type ColLink = { href: string; external?: boolean }
+
+// Per-row config for the Kontakt column, in link order: book / email / phone / LinkedIn.
+// Labels come from i18n; icon + href live here.
+const contactRows: { Icon: typeof CalendarFill; resolve: (label: string) => ColLink }[] = [
+  { Icon: CalendarFill, resolve: () => ({ href: COMPANY.bookingUrl, external: true }) },
+  { Icon: MailFill, resolve: (l) => ({ href: `mailto:${l}` }) },
+  { Icon: PhoneFill, resolve: () => ({ href: COMPANY.phoneHref }) },
+  { Icon: LinkedInFill, resolve: () => ({ href: '#' }) }, // TODO: real LinkedIn URL
+]
 
 export default function Footer() {
   const { t, i18n } = useTranslation()
@@ -24,6 +30,9 @@ export default function Footer() {
     { to: 'datenschutz', label: t('footer.privacy') },
   ]
 
+  const companyIdx = 1 // Unternehmen / Company — legal links live here
+  const contactIdx = cols.length - 1 // Kontakt / Get in touch — iconed contact links
+
   return (
     <footer className="footer">
       <div className="footer__inner">
@@ -35,30 +44,46 @@ export default function Footer() {
           <p className="footer__tagline">{t('footer.tagline')}</p>
         </div>
 
-        {cols.map((c) => (
+        {cols.map((c, ci) => (
           <div className="footer__col" key={c.h}>
             <h4>{c.h}</h4>
-            {c.links.map((link) => (
-              <a key={link} href={hrefFor(link)}>
-                {link}
-              </a>
-            ))}
+
+            {ci === contactIdx
+              ? c.links.map((link, li) => {
+                  const row = contactRows[li] ?? contactRows[0]
+                  const { href, external } = row.resolve(link)
+                  const Icon = row.Icon
+                  return (
+                    <a
+                      className="footer__link footer__link--icon"
+                      key={link}
+                      href={href}
+                      {...(external ? { target: '_blank', rel: 'noopener noreferrer' } : {})}
+                    >
+                      <Icon className="footer__link-icon" />
+                      <span>{link}</span>
+                    </a>
+                  )
+                })
+              : c.links.map((link) => (
+                  <a key={link} href="#">
+                    {link}
+                  </a>
+                ))}
+
+            {ci === companyIdx &&
+              legal.map((item) => (
+                <Link key={item.to} to={`/${l}/${item.to}`}>
+                  {item.label}
+                </Link>
+              ))}
           </div>
         ))}
       </div>
 
       <div className="footer__bottom">
         <span>{t('footer.rights')}</span>
-        <div className="footer__bottom-right">
-          <LanguageSwitcher />
-          <div className="footer__legal">
-            {legal.map((item) => (
-              <Link key={item.to} to={`/${l}/${item.to}`}>
-                {item.label}
-              </Link>
-            ))}
-          </div>
-        </div>
+        <LanguageSwitcher />
       </div>
     </footer>
   )
