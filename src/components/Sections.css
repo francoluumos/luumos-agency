@@ -117,6 +117,13 @@
   color: var(--brand-blue);
   background: color-mix(in srgb, var(--brand-blue) 9%, transparent);
   border: 1px solid color-mix(in srgb, var(--brand-blue) 16%, transparent);
+  transition: transform 0.25s var(--ease-out-quint), box-shadow 0.25s ease;
+}
+@media (hover: hover) and (pointer: fine) {
+  .svc__item:hover .svc__icon {
+    transform: translateY(-3px);
+    box-shadow: 0 12px 22px -14px var(--glow-blue);
+  }
 }
 .svc__icon svg {
   width: 26px;
@@ -255,9 +262,11 @@
   box-shadow: 0 16px 36px -12px var(--glow-blue);
   transition: transform 0.16s var(--ease-out-quint), box-shadow 0.25s ease;
 }
-.cta__btn:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 22px 44px -12px var(--glow-bright);
+@media (hover: hover) and (pointer: fine) {
+  .cta__btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 22px 44px -12px var(--glow-bright);
+  }
 }
 .cta__btn:active {
   transform: scale(0.97);

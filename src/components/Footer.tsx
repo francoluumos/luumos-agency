@@ -15,7 +15,7 @@ const contactRows: { Icon: typeof CalendarFill; resolve: (label: string) => ColL
   { Icon: CalendarFill, resolve: () => ({ href: COMPANY.bookingUrl, external: true }) },
   { Icon: MailFill, resolve: (l) => ({ href: `mailto:${l}` }) },
   { Icon: PhoneFill, resolve: () => ({ href: COMPANY.phoneHref }) },
-  { Icon: LinkedInFill, resolve: () => ({ href: '#' }) }, // TODO: real LinkedIn URL
+  { Icon: LinkedInFill, resolve: () => ({ href: COMPANY.linkedinUrl, external: true }) },
 ]
 
 export default function Footer() {

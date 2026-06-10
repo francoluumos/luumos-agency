@@ -115,10 +115,12 @@
   transition: transform 0.3s var(--ease-out-quint), box-shadow 0.3s ease, border-color 0.3s ease;
   animation: tile-pop 0.6s var(--ease-out-quint) both;
 }
-.flow__tile:hover {
-  transform: translate(-50%, calc(-50% - 3px));
-  box-shadow: 0 16px 30px -16px var(--glow-blue);
-  border-color: color-mix(in srgb, var(--brand-blue) 35%, var(--hairline));
+@media (hover: hover) and (pointer: fine) {
+  .flow__tile:hover {
+    transform: translate(-50%, calc(-50% - 3px));
+    box-shadow: 0 16px 30px -16px var(--glow-blue);
+    border-color: color-mix(in srgb, var(--brand-blue) 35%, var(--hairline));
+  }
 }
 .flow__tile-icon {
   width: 27px;

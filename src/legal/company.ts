@@ -14,4 +14,5 @@ export const COMPANY = {
   jurisdiction: 'Aarau',
   /** Google booking link — used by every "Book a consult" CTA. */
   bookingUrl: 'https://calendar.app.google/wTazZbmi7SjdYbux8',
+  linkedinUrl: 'https://www.linkedin.com/in/franco-steiner-167832226/',
 } as const

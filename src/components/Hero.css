@@ -99,9 +99,11 @@
   box-shadow: 0 14px 34px -12px var(--glow-blue);
   transition: transform 0.16s var(--ease-out-quint), box-shadow 0.25s ease;
 }
-.hero__cta:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 20px 42px -12px var(--glow-bright);
+@media (hover: hover) and (pointer: fine) {
+  .hero__cta:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 20px 42px -12px var(--glow-bright);
+  }
 }
 .hero__cta:active {
   transform: scale(0.97);
@@ -119,9 +121,11 @@
   background: var(--surface);
   transition: border-color 0.25s ease, transform 0.16s var(--ease-out-quint);
 }
-.hero__demo:hover {
-  transform: translateY(-2px);
-  border-color: color-mix(in srgb, var(--brand-blue) 30%, var(--hairline));
+@media (hover: hover) and (pointer: fine) {
+  .hero__demo:hover {
+    transform: translateY(-2px);
+    border-color: color-mix(in srgb, var(--brand-blue) 30%, var(--hairline));
+  }
 }
 .hero__demo:active {
   transform: scale(0.97);
