@@ -46,7 +46,8 @@ Deploy target per `DEPLOY.md`: Vercel + Hostpoint, `staging`→`main` branch mod
 - [ ] **Cookie-consent banner** not built yet — required before GA/PostHog load in the EU.
 - [ ] **Analytics not wired** yet — PostHog + Google Analytics are described in the privacy policy but not installed in code.
 - [ ] **Vercel SPA rewrite** needed so `/de`, `/en`, `/de/agb` etc. resolve in production.
-- [ ] **git**: nothing committed yet. Per DEPLOY.md, work on `staging`, never push `main` directly. Commit only when Franco asks.
+- [ ] **git**: initial commit made on `main` (`42cc296`, 334 files); `staging` branch created off it. `main` intentionally NOT pushed (per DEPLOY.md: never push `main` directly); only `staging` is pushed for the Vercel Preview build. Remote uses the `github.com-luumos` SSH alias → `id_ed25519_luumos` (key is passphrase-protected; `ssh-add` it before pushing).
+- [ ] **GitHub repo is PUBLIC** (`francoluumos/luumos-agency`) — source incl. DRAFT legal text (Impressum/AGB/Datenschutz) and company details is world-readable. The Vercel basic-auth gate protects the *deployed site*, not the *source*. Decide: make repo private pre-launch, or accept public.
 - [ ] Optional: localize legal slugs for EN (e.g. `/en/privacy`), language switch on legal pages currently returns to home.
 - [ ] Consider real integration logos vs current monoline tool icons in the hero (Franco's call).
 
