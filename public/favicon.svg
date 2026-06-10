@@ -1,0 +1,18 @@
+<svg width="180" height="180" viewBox="25 10 180 180" xmlns="http://www.w3.org/2000/svg">
+  <title>Luumos</title>
+  <defs>
+    <linearGradient id="spark" x1="185" y1="35" x2="45" y2="165" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#38BDF8" />
+      <stop offset="0.55" stop-color="#2563EB" />
+      <stop offset="1" stop-color="#1E40AF" />
+    </linearGradient>
+  </defs>
+  <g fill="url(#spark)">
+    <rect x="100" y="14" width="30" height="68" rx="15" transform="rotate(30 115 100)" />
+    <rect x="100" y="14" width="30" height="68" rx="15" transform="rotate(90 115 100)" />
+    <rect x="100" y="14" width="30" height="68" rx="15" transform="rotate(150 115 100)" />
+    <rect x="100" y="14" width="30" height="68" rx="15" transform="rotate(210 115 100)" />
+    <rect x="100" y="14" width="30" height="68" rx="15" transform="rotate(270 115 100)" />
+    <rect x="100" y="14" width="30" height="68" rx="15" transform="rotate(330 115 100)" />
+  </g>
+</svg>

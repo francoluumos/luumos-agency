@@ -1,0 +1,95 @@
+/* ============================================================
+   Luumos — design tokens (from DESIGN.md)
+   Light, airy canvas. One rationed brand gradient (violet→magenta).
+   ============================================================ */
+:root {
+  /* Brand — mid/dark blue → bright blue */
+  --brand-deep: #1e40af;
+  --brand-blue: #2563eb;
+  --brand-bright: #38bdf8;
+  --brand-gradient: linear-gradient(120deg, var(--brand-deep), var(--brand-blue) 48%, var(--brand-bright));
+
+  /* Neutrals (faint cool/blue cast) */
+  --ink: #14161c;
+  --muted: #565b67;
+  --bg: #fafbfc;
+  --surface: #ffffff;
+  --hairline: #e7ebf2;
+
+  /* Tints used sparingly for glow / wash */
+  --tint-050: #eef4ff;
+  --tint-100: #dce8ff;
+  --glow-blue: rgba(37, 99, 235, 0.3);
+  --glow-bright: rgba(56, 189, 248, 0.32);
+
+  /* Type */
+  --font-sans: 'Geist', 'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+
+  /* Radii */
+  --r-sm: 8px;
+  --r-md: 14px;
+  --r-lg: 22px;
+  --r-pill: 999px;
+
+  /* Motion */
+  --ease-out-quint: cubic-bezier(0.22, 1, 0.36, 1);
+  --dur: 0.55s;
+
+  /* Layout */
+  --maxw: 1200px;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--ink);
+  font-family: var(--font-sans);
+  font-weight: 400;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+h1,
+h2,
+h3,
+p {
+  margin: 0;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+button {
+  font-family: inherit;
+  cursor: pointer;
+}
+
+.u-gradient-text {
+  background: var(--brand-gradient);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+  }
+}

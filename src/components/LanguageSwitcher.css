@@ -1,0 +1,28 @@
+.lang {
+  display: inline-flex;
+  align-items: center;
+  padding: 3px;
+  gap: 2px;
+  border: 1px solid var(--hairline);
+  border-radius: var(--r-pill);
+  background: var(--surface);
+}
+.lang__opt {
+  display: inline-grid;
+  place-items: center;
+  min-width: 34px;
+  padding: 5px 9px;
+  font-size: 0.78rem;
+  font-weight: 600;
+  letter-spacing: 0.03em;
+  color: var(--muted);
+  border-radius: var(--r-pill);
+  transition: color 0.2s ease, background 0.2s ease;
+}
+.lang__opt:hover {
+  color: var(--ink);
+}
+.lang__opt.is-active {
+  color: #fff;
+  background: var(--brand-gradient);
+}

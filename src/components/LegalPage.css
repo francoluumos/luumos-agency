@@ -1,0 +1,62 @@
+.legal {
+  background:
+    radial-gradient(60% 30% at 50% -2%, rgba(37, 99, 235, 0.06), transparent 70%),
+    var(--bg);
+}
+.legal__inner {
+  max-width: 760px;
+  margin: 0 auto;
+  padding: 56px 28px 96px;
+}
+.legal__back {
+  display: inline-block;
+  margin-bottom: 28px;
+  font-size: 0.92rem;
+  font-weight: 500;
+  color: var(--muted);
+  transition: color 0.2s ease;
+}
+.legal__back:hover {
+  color: var(--brand-blue);
+}
+.legal__title {
+  font-size: clamp(2rem, 4vw, 2.8rem);
+  line-height: 1.1;
+  letter-spacing: -0.03em;
+  font-weight: 600;
+  text-wrap: balance;
+}
+.legal__updated {
+  margin-top: 10px;
+  font-size: 0.85rem;
+  color: var(--muted);
+}
+.legal__intro {
+  margin-top: 22px;
+  font-size: 1.05rem;
+  color: var(--ink);
+  text-wrap: pretty;
+}
+.legal__section {
+  margin-top: 34px;
+}
+.legal__h {
+  font-size: 1.18rem;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+}
+.legal__p {
+  margin-top: 10px;
+  color: var(--muted);
+  font-size: 0.98rem;
+  line-height: 1.7;
+  max-width: 70ch;
+}
+.legal__note {
+  margin-top: 48px;
+  padding-top: 20px;
+  border-top: 1px solid var(--hairline);
+  font-size: 0.82rem;
+  color: var(--muted);
+  font-style: italic;
+}
