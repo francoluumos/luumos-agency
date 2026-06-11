@@ -28,16 +28,16 @@ export const en = {
   services: {
     eyebrow: 'What we do',
     title: 'One partner for AI, automation and the systems in between',
-    sub: 'Senior engineering across your stack — paired with AI that makes work faster to ship and lighter to run.',
+    sub: 'Senior engineers across your tools and systems — paired with AI that gets the work done faster and keeps it running with less effort.',
     learn: 'Learn more',
     items: [
       {
         title: 'AI & workflow automation',
-        desc: 'We connect the tools you already use and automate the manual handoffs between them — fewer errors, hours back every week.',
+        desc: 'We connect the tools you already use and automate the manual handoffs between them — fewer errors, and hours back every week.',
       },
       {
         title: 'Custom AI agents',
-        desc: 'Agentic systems that take real work off your team’s plate — drafting, triaging, scheduling, reporting — built for your processes and monitored in production.',
+        desc: 'AI agents that take real work off your team’s plate — drafting, triaging, scheduling, reporting — built for your processes and monitored once they’re live.',
       },
       {
         title: 'Integration & custom builds',
@@ -70,7 +70,7 @@ export const en = {
   referenzen: {
     eyebrow: 'Selected work',
     title: 'What we’ve built, by industry',
-    sub: 'A sample of the automations and AI builds we’ve shipped for teams like yours. Swipe, or use the arrows to browse.',
+    sub: 'A sample of the automations and AI builds we’ve delivered for teams like yours. Swipe or use the arrows to browse.',
     prev: 'Previous',
     next: 'Next',
     industries: [

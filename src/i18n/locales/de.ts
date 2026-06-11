@@ -30,16 +30,16 @@ export const de: Resources = {
   services: {
     eyebrow: 'Was wir tun',
     title: 'Ein Partner für KI, Automatisierung und die Systeme dazwischen',
-    sub: 'Erfahrenes Engineering über Ihren gesamten Stack – kombiniert mit KI, die Arbeit schneller liefert und den Betrieb leichter macht.',
+    sub: 'Erfahrene Engineers über Ihre Tools und Systeme hinweg – kombiniert mit KI, die Arbeit schneller erledigt und den Betrieb mit weniger Aufwand am Laufen hält.',
     learn: 'Mehr erfahren',
     items: [
       {
         title: 'KI- & Workflow-Automatisierung',
-        desc: 'Wir verbinden die Tools, die Sie bereits nutzen, und automatisieren die manuellen Übergaben dazwischen – weniger Fehler, jede Woche Stunden zurück.',
+        desc: 'Wir verbinden die Tools, die Sie bereits nutzen, und automatisieren die manuellen Übergaben dazwischen – weniger Fehler und jede Woche Stunden zurück.',
       },
       {
         title: 'Massgeschneiderte KI-Agenten',
-        desc: 'Agentische Systeme, die Ihrem Team echte Arbeit abnehmen – Entwürfe, Triage, Terminplanung, Reporting – gebaut für Ihre Prozesse und im Betrieb überwacht.',
+        desc: 'KI-Agenten, die Ihrem Team echte Arbeit abnehmen – Entwürfe, Triage, Terminplanung, Reporting – gebaut für Ihre Prozesse und im laufenden Betrieb überwacht.',
       },
       {
         title: 'Integration & Individualentwicklung',
