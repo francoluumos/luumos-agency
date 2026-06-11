@@ -4,7 +4,7 @@ Open threads and "might do" items. Pull from here into a session; move done item
 out. See SESSION.md for the current pick-up point.
 
 ## SEO / GEO
-- [ ] **OG/social image** — `index.html` + `seo.ts` reference `https://luumos.ch/og-image.png`, which does not exist yet. Add a 1200×630 PNG to `public/og-image.png` or social/link previews break.
+- [x] **OG/social image** — `public/og-image.png` (2400×1260, on-brand) created 2026-06-11; referenced by `index.html` + `seo.ts`. Regenerate via `/tmp/og.html` + headless Chrome if the design changes.
 - [ ] **Prerendering / SSG** — the site is a client-rendered SPA, so all content (incl. the FAQPage schema) is JS-rendered. Google renders JS, but for maximum AI-crawler/GEO pickup, add static prerendering (e.g. `vite-react-ssg`, `vite-plugin-prerender`, or a prerender step in the Vercel build). Highest-impact SEO follow-up.
 
 ## Pre-launch (from SESSION.md)
