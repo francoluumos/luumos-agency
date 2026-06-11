@@ -1,0 +1,72 @@
+.faq__list {
+  max-width: 760px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+}
+
+.faq__item {
+  border-top: 1px solid var(--hairline);
+}
+.faq__item:last-child {
+  border-bottom: 1px solid var(--hairline);
+}
+
+.faq__q-row {
+  margin: 0;
+  font-size: inherit;
+  font-weight: inherit;
+}
+.faq__q {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 18px;
+  padding: 22px 4px;
+  text-align: left;
+  background: none;
+  border: none;
+  font-size: 1.06rem;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  color: var(--ink);
+  transition: color 0.2s ease;
+}
+@media (hover: hover) and (pointer: fine) {
+  .faq__q:hover {
+    color: var(--brand-blue);
+  }
+}
+.faq__chev {
+  flex: none;
+  width: 18px;
+  height: 18px;
+  color: var(--muted);
+  transition: transform 0.3s var(--ease-out-quint), color 0.2s ease;
+}
+.faq__item.is-open .faq__chev {
+  transform: rotate(180deg);
+  color: var(--brand-blue);
+}
+
+/* answer: collapsed with grid-rows so it animates height yet stays in the DOM */
+.faq__a {
+  display: grid;
+  grid-template-rows: 0fr;
+  transition: grid-template-rows 0.32s var(--ease-out-quint);
+}
+.faq__item.is-open .faq__a {
+  grid-template-rows: 1fr;
+}
+.faq__a-inner {
+  overflow: hidden;
+}
+.faq__a-inner p {
+  margin: 0;
+  padding: 0 4px 24px;
+  max-width: 64ch;
+  color: var(--muted);
+  font-size: 0.99rem;
+  line-height: 1.6;
+}
