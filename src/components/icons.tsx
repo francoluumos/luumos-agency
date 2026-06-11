@@ -186,6 +186,48 @@ export function Bolt(props: IconProps) {
   )
 }
 
+/* ---- Industry glyphs (monoline) — Referenzen carousel ---- */
+export function Stethoscope(props: IconProps) {
+  return (
+    <svg {...base} {...props}>
+      <path d="M5.5 3.5V7a4 4 0 0 0 8 0V3.5" {...stroke} />
+      <path d="M9.5 11v2.4a5.5 5.5 0 0 0 11 0v-1.1" {...stroke} />
+      <circle cx="20.5" cy="10.4" r="1.9" {...stroke} />
+    </svg>
+  )
+}
+export function Building(props: IconProps) {
+  return (
+    <svg {...base} {...props}>
+      <rect x="5" y="3.5" width="14" height="17" rx="1.6" {...stroke} />
+      <path d="M9 8h2M13 8h2M9 12h2M13 12h2M9.5 20v-3h5v3" {...stroke} />
+    </svg>
+  )
+}
+export function Activity(props: IconProps) {
+  return (
+    <svg {...base} {...props}>
+      <path d="M3 12.5h4l2-6 4 12 2.2-6H21" {...stroke} />
+    </svg>
+  )
+}
+export function Compass(props: IconProps) {
+  return (
+    <svg {...base} {...props}>
+      <circle cx="12" cy="12" r="8.5" {...stroke} />
+      <path d="M15.6 8.4l-2.1 5.1-5.1 2.1 2.1-5.1 5.1-2.1Z" {...stroke} />
+    </svg>
+  )
+}
+export function Briefcase(props: IconProps) {
+  return (
+    <svg {...base} {...props}>
+      <rect x="3.5" y="7" width="17" height="12.5" rx="2.5" {...stroke} />
+      <path d="M8.5 7V5.6A1.6 1.6 0 0 1 10.1 4h3.8a1.6 1.6 0 0 1 1.6 1.6V7M3.5 12.2h17" {...stroke} />
+    </svg>
+  )
+}
+
 export function ArrowRight(props: IconProps) {
   return (
     <svg {...base} {...props}>

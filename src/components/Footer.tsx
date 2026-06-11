@@ -30,6 +30,7 @@ export default function Footer() {
     { to: 'datenschutz', label: t('footer.privacy') },
   ]
 
+  const servicesIdx = 0 // Leistungen / Services — links jump to #services
   const companyIdx = 1 // Unternehmen / Company — legal links live here
   const contactIdx = cols.length - 1 // Kontakt / Get in touch — iconed contact links
 
@@ -65,18 +66,33 @@ export default function Footer() {
                     </a>
                   )
                 })
-              : c.links.map((link) => (
-                  <a key={link} href="#">
-                    {link}
-                  </a>
-                ))}
+              : c.links.map((link, li) => {
+                  // Leistungen column → jump to "was wir tun" (#services); its
+                  // last item ("Vorgehen") goes to the how-it-works section.
+                  // Unternehmen column → "Über uns" also points at #services.
+                  const href =
+                    ci === servicesIdx
+                      ? `/${l}${li === 3 ? '#how' : '#services'}`
+                      : ci === companyIdx
+                        ? `/${l}#services`
+                        : '#'
+                  return (
+                    <a key={link} href={href}>
+                      {link}
+                    </a>
+                  )
+                })}
 
-            {ci === companyIdx &&
-              legal.map((item) => (
-                <Link key={item.to} to={`/${l}/${item.to}`}>
-                  {item.label}
-                </Link>
-              ))}
+            {ci === companyIdx && (
+              <>
+                <a href={`/${l}#faq`}>FAQ</a>
+                {legal.map((item) => (
+                  <Link key={item.to} to={`/${l}/${item.to}`}>
+                    {item.label}
+                  </Link>
+                ))}
+              </>
+            )}
           </div>
         ))}
       </div>

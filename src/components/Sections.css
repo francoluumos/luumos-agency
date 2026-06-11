@@ -5,6 +5,7 @@
   max-width: var(--maxw);
   margin: 0 auto;
   padding: 100px 28px;
+  scroll-margin-top: 84px; /* clear the sticky nav when jumped to via anchor */
 }
 .section__head {
   max-width: 720px;

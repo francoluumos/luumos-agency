@@ -1,17 +1,16 @@
 import { useTranslation } from 'react-i18next'
-import { Spark, Chevron } from './icons'
+import { Spark } from './icons'
 import { COMPANY } from '../legal/company'
 import wordmark from '../assets/luumos-wordmark-black-transparent.png'
 import './Nav.css'
 
 export default function Nav() {
   const { t } = useTranslation()
+  // Anchor links to in-page sections (Über uns → "what we do", etc.)
   const links = [
-    { label: t('nav.services'), menu: true },
-    { label: t('nav.how') },
-    { label: t('nav.work') },
-    { label: t('nav.resources'), menu: true },
-    { label: t('nav.about') },
+    { label: t('nav.about'), href: '#services' },
+    { label: t('nav.how'), href: '#how' },
+    { label: t('nav.work'), href: '#referenzen' },
   ]
 
   return (
@@ -24,9 +23,8 @@ export default function Nav() {
 
         <nav className="nav__links" aria-label="Primary">
           {links.map((l) => (
-            <a key={l.label} className="nav__link" href="#">
+            <a key={l.label} className="nav__link" href={l.href}>
               {l.label}
-              {l.menu && <Chevron className="nav__chev" />}
             </a>
           ))}
         </nav>

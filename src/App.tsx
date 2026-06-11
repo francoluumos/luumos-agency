@@ -6,6 +6,7 @@ import Nav from './components/Nav'
 import Footer from './components/Footer'
 import Home from './components/Home'
 import LegalPage from './components/LegalPage'
+import CookieConsent from './components/CookieConsent'
 
 function LocaleLayout() {
   const { lang } = useParams()
@@ -32,6 +33,7 @@ function LocaleLayout() {
         <Outlet />
       </main>
       <Footer />
+      <CookieConsent />
     </>
   )
 }
