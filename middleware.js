@@ -4,7 +4,9 @@
 //   - the matcher MUST exclude _vercel + favicon.ico (else the gate blocks Vercel internals)
 //   - the realm string MUST be ASCII-only, or the browser never shows its login dialog.
 export const config = {
-  matcher: ['/((?!_vercel|favicon.ico).*)'],
+  // Gate everything EXCEPT Vercel internals, the favicon, and the public SEO/social
+  // assets — so crawlers + link-preview scrapers can fetch these even while gated.
+  matcher: ['/((?!_vercel|favicon.ico|favicon.svg|og-image.png|robots.txt|sitemap.xml).*)'],
 }
 
 export default function middleware(request) {

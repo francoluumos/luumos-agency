@@ -1,0 +1,287 @@
+<!doctype html>
+<html lang="de">
+  <head>
+    <meta charset="utf-8" />
+    <title>Luumos — live ansehen</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&display=swap" rel="stylesheet" />
+    <style>
+      :root {
+        --deep: #1e40af; --blue: #2563eb; --bright: #38bdf8;
+        --grad: linear-gradient(120deg, #1e40af, #2563eb 48%, #38bdf8);
+        --ink: #14161c; --muted: #565b67; --line: #e7ebf2;
+        --ease: cubic-bezier(0.22, 1, 0.36, 1);
+      }
+      * { margin: 0; box-sizing: border-box; }
+      html, body { width: 100%; height: 100%; overflow: hidden; background: #0b0d12; }
+      body { font-family: 'Geist', -apple-system, 'Helvetica Neue', Arial, sans-serif; display: grid; place-items: center; color: var(--ink); }
+      .scaler { width: 100vw; height: 56.25vw; max-height: 100vh; max-width: 177.78vh; display: grid; place-items: center; }
+      .stage {
+        position: relative; width: 1280px; height: 720px; transform: scale(var(--s, 1)); transform-origin: center;
+        overflow: hidden; background: radial-gradient(120% 120% at 80% -10%, #eef4ff 0%, #ffffff 45%, #f7f9fc 100%);
+      }
+      /* ambient life */
+      .grid {
+        position: absolute; inset: -40px; opacity: 0.5;
+        background-image: linear-gradient(var(--line) 1px, transparent 1px), linear-gradient(90deg, var(--line) 1px, transparent 1px);
+        background-size: 64px 64px; -webkit-mask-image: radial-gradient(80% 80% at 50% 45%, #000 30%, transparent 75%);
+        mask-image: radial-gradient(80% 80% at 50% 45%, #000 30%, transparent 75%); animation: drift 24s linear infinite;
+      }
+      @keyframes drift { to { transform: translate(64px, 64px); } }
+      .auraA, .auraB { position: absolute; border-radius: 50%; filter: blur(10px); pointer-events: none; }
+      .auraA { width: 720px; height: 720px; right: -240px; top: -300px; background: radial-gradient(circle, rgba(56,189,248,.22), transparent 64%); animation: breathe 9s ease-in-out infinite; }
+      .auraB { width: 560px; height: 560px; left: -200px; bottom: -240px; background: radial-gradient(circle, rgba(37,99,235,.14), transparent 66%); animation: breathe 11s ease-in-out infinite reverse; }
+      @keyframes breathe { 0%,100% { transform: scale(1); opacity: .9; } 50% { transform: scale(1.12); opacity: 1; } }
+
+      /* scenes — enter with movement + de-blur for cinematic feel */
+      .scene {
+        position: absolute; inset: 0; display: grid; place-items: center; opacity: 0;
+        transform: scale(1.05); filter: blur(7px); pointer-events: none;
+        transition: opacity .45s var(--ease), transform .7s var(--ease), filter .55s var(--ease);
+      }
+      .scene.on { opacity: 1; transform: none; filter: none; }
+      .center { text-align: center; padding: 0 110px; }
+      h2 { font-size: 74px; font-weight: 600; letter-spacing: -0.03em; line-height: 1.04; }
+      .lead { font-size: 38px; font-weight: 500; color: var(--muted); }
+      .grad-text { background: var(--grad); -webkit-background-clip: text; background-clip: text; color: transparent; }
+      .tw-line { display: block; }
+      .caret { display: inline-block; width: 4px; height: 0.92em; margin-left: 4px; vertical-align: -0.1em; border-radius: 2px; background: var(--blue); animation: blink 1s steps(1) infinite; }
+      .caret.off { display: none; }
+      @keyframes blink { 50% { opacity: 0; } }
+
+      .scene.on .rise { animation: rise .6s var(--ease) both; }
+      .scene.on .rise.d1 { animation-delay: .1s; } .scene.on .rise.d2 { animation-delay: .2s; } .scene.on .rise.d3 { animation-delay: .3s; }
+      @keyframes rise { from { opacity: 0; transform: translateY(24px); } to { opacity: 1; transform: none; } }
+      .scene.on .word { display: inline-block; animation: word .5s var(--ease) both; }
+      .scene.on .word:nth-child(1){animation-delay:.05s}.scene.on .word:nth-child(2){animation-delay:.15s}.scene.on .word:nth-child(3){animation-delay:.25s}.scene.on .word:nth-child(4){animation-delay:.35s}.scene.on .word:nth-child(5){animation-delay:.45s}
+      @keyframes word { from { opacity: 0; transform: translateY(20px) rotate(2deg); } to { opacity: 1; transform: none; } }
+
+      /* scene 2 — scattered tools */
+      .tiles { position: relative; width: 760px; height: 320px; }
+      .tile { position: absolute; width: 96px; height: 96px; display: grid; place-items: center; background: #fff; border: 1px solid var(--line); border-radius: 22px; box-shadow: 0 18px 40px -26px rgba(22,21,26,.5); color: #2c2a33; }
+      .tile svg { width: 44px; height: 44px; }
+      .tag { position: absolute; font-size: 18px; font-weight: 600; color: #b04a4a; background: #fdeaea; padding: 4px 12px; border-radius: 999px; }
+      .scene.on .float { animation: float 2.6s ease-in-out infinite; }
+      @keyframes float { 0%,100% { transform: translateY(0) rotate(0); } 50% { transform: translateY(-16px) rotate(-1.5deg); } }
+      .scene.on .pulseTag { animation: pulseTag 1.6s ease-in-out infinite; }
+      @keyframes pulseTag { 0%,100% { opacity: .65; } 50% { opacity: 1; } }
+
+      /* scene 3 — flow */
+      .flow { position: relative; width: 1040px; height: 420px; }
+      .flow svg.wires { position: absolute; inset: 0; width: 100%; height: 100%; overflow: visible; }
+      .wire { fill: none; stroke: var(--line); stroke-width: 2; stroke-dasharray: 2 8; stroke-linecap: round; }
+      .wire-live { fill: none; stroke: url(#fg); stroke-width: 2; stroke-dasharray: 3 10; opacity: .6; }
+      .scene.on .wire-live { animation: dash 1s linear infinite; }
+      @keyframes dash { to { stroke-dashoffset: -22; } }
+      .ftile { position: absolute; width: 84px; height: 84px; transform: translate(-50%,-50%); display: grid; place-items: center; background: #fff; border: 1px solid var(--line); border-radius: 18px; box-shadow: 0 14px 30px -22px rgba(22,21,26,.55); opacity: 0; }
+      .ftile svg { width: 38px; height: 38px; } .ftile.in svg { color: #2c2a33; } .ftile.out svg { color: var(--blue); }
+      .scene.on .ftile { animation: pop .5s var(--ease) both; }
+      .scene.on .ftile.i1{animation-delay:.05s}.scene.on .ftile.i2{animation-delay:.13s}.scene.on .ftile.i3{animation-delay:.21s}
+      .scene.on .ftile.o1{animation-delay:.5s}.scene.on .ftile.o2{animation-delay:.58s}.scene.on .ftile.o3{animation-delay:.66s}
+      @keyframes pop { from { opacity: 0; transform: translate(-50%,-50%) scale(.78); } to { opacity: 1; transform: translate(-50%,-50%) scale(1); } }
+      .core { position: absolute; left: 50%; top: 50%; transform: translate(-50%,-50%); width: 132px; height: 132px; display: grid; place-items: center; opacity: 0; }
+      .scene.on .core { animation: corein .6s var(--ease) .28s both; }
+      @keyframes corein { from { opacity: 0; transform: translate(-50%,-50%) scale(.5) rotate(-40deg); } to { opacity: 1; transform: translate(-50%,-50%) scale(1) rotate(0); } }
+      .disc { width: 116px; height: 116px; border-radius: 50%; display: grid; place-items: center; background: radial-gradient(circle at 50% 38%, #fff, #f4f9ff 60%, #e7f1ff); border: 1px solid color-mix(in srgb, var(--blue) 24%, var(--line)); box-shadow: 0 0 0 10px rgba(37,99,235,.06), 0 18px 50px -16px rgba(37,99,235,.45); }
+      .ring { position: absolute; width: 116px; height: 116px; border-radius: 50%; border: 2px solid var(--blue); opacity: 0; }
+      .scene.on .ring { animation: ring 2.6s ease-out infinite; } .scene.on .ring.r2 { animation-delay: 1.3s; border-color: var(--bright); }
+      @keyframes ring { 0% { transform: scale(.7); opacity: .5; } 100% { transform: scale(1.9); opacity: 0; } }
+      .pulse { position: absolute; top: 0; left: 0; width: 12px; height: 12px; margin: -6px 0 0 -6px; border-radius: 50%; }
+      .scene.on .pulse { animation: travel 1.7s linear infinite; }
+      @keyframes travel { from { offset-distance: 0%; opacity: 0; } 12% { opacity: 1; } 88% { opacity: 1; } to { offset-distance: 100%; opacity: 0; } }
+
+      /* scene 4 — pillars */
+      .pillars { display: flex; gap: 36px; }
+      .pillar { width: 240px; text-align: center; }
+      .badge { width: 80px; height: 80px; margin: 0 auto 22px; border-radius: 22px; display: grid; place-items: center; background: var(--grad); color: #fff; box-shadow: 0 16px 30px -16px rgba(37,99,235,.6); }
+      .scene.on .pillar .badge { animation: badgein .6s var(--ease) both; }
+      .scene.on .pillar:nth-child(2) .badge { animation-delay: .12s; } .scene.on .pillar:nth-child(3) .badge { animation-delay: .24s; }
+      @keyframes badgein { from { opacity: 0; transform: translateY(16px) scale(.7) rotate(-12deg); } to { opacity: 1; transform: none; } }
+      .badge svg { width: 38px; height: 38px; } .pillar h3 { font-size: 30px; font-weight: 600; }
+
+      /* scene 5 — counter */
+      .count { font-size: 176px; font-weight: 700; letter-spacing: -0.04em; line-height: 1; }
+      .scene.on .count { animation: punch .6s var(--ease) both; }
+      @keyframes punch { from { opacity: 0; transform: scale(.6); } to { opacity: 1; transform: scale(1); } }
+      .unit { font-size: 40px; font-weight: 600; color: var(--muted); margin-top: 6px; }
+
+      /* scene 6 — lockup */
+      .lockup { display: flex; align-items: center; gap: 22px; }
+      .lockup .spark { width: 92px; height: 92px; }
+      .lockup .word-img { height: 76px; }
+      .pill { margin-top: 40px; display: inline-flex; align-items: center; gap: 12px; padding: 18px 34px; font-size: 30px; font-weight: 600; color: #fff; border-radius: 999px; background: var(--grad); box-shadow: 0 18px 40px -16px rgba(37,99,235,.6); position: relative; overflow: hidden; }
+      .scene.on .pill::after { content: ''; position: absolute; inset: 0; background: linear-gradient(110deg, transparent 30%, rgba(255,255,255,.45) 50%, transparent 70%); transform: translateX(-120%); animation: shine 2.4s ease-in-out .6s infinite; }
+      @keyframes shine { to { transform: translateX(120%); } }
+
+      .bar { position: fixed; left: 0; right: 0; bottom: 0; height: 4px; background: rgba(255,255,255,.12); }
+      .bar i { display: block; height: 100%; width: 0; background: var(--grad); }
+    </style>
+  </head>
+  <body>
+    <div class="scaler">
+      <div class="stage" id="stage">
+        <div class="grid"></div><div class="auraA"></div><div class="auraB"></div>
+
+        <section class="scene" data-at="0">
+          <div class="center">
+            <h2 class="tw">
+              <span class="tw-line"><span id="twPre"></span><span id="twWord" class="grad-text"></span><span class="caret" id="caret"></span></span>
+              <span class="tw-line"><span id="twPost"></span></span>
+            </h2>
+          </div>
+        </section>
+
+        <section class="scene" data-at="4200">
+          <div class="center">
+            <div class="tiles">
+              <div class="tile float" style="left:40px;top:20px"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><rect x="3.5" y="5" width="17" height="15" rx="2.5"/><path d="M3.5 9.5h17M8 3.5v3M16 3.5v3" stroke-linecap="round"/></svg></div>
+              <div class="tile float" style="left:330px;top:130px;animation-delay:.4s"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><rect x="3" y="5.5" width="18" height="13" rx="2.5"/><path d="M4 7.5l8 5.5 8-5.5" stroke-linecap="round"/></svg></div>
+              <div class="tile float" style="left:620px;top:30px;animation-delay:.8s"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><rect x="4" y="3.5" width="16" height="17" rx="2.5"/><path d="M4 9h16M4 14.5h16M9.5 9v11.5" stroke-linecap="round"/></svg></div>
+              <span class="tag float pulseTag" style="left:150px;top:130px" data-de="manuell" data-en="manual"></span>
+              <span class="tag float pulseTag" style="left:470px;top:40px;animation-delay:.5s" data-de="manuell" data-en="manual"></span>
+              <span class="tag float pulseTag" style="left:640px;top:210px;animation-delay:.9s" data-de="manuell" data-en="manual"></span>
+            </div>
+            <p class="lead rise d2" style="margin-top:26px" data-de='E-Mails. Termine. Daten. <strong style="color:var(--ink)">Alles von Hand.</strong>' data-en='Emails. Bookings. Data. <strong style="color:var(--ink)">All by hand.</strong>'></p>
+          </div>
+        </section>
+
+        <section class="scene" data-at="9200">
+          <div class="center">
+            <div class="flow">
+              <svg class="wires" viewBox="0 0 1040 420" preserveAspectRatio="none">
+                <defs><linearGradient id="fg" x1="0" y1="0" x2="1040" y2="0" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#1E40AF"/><stop offset=".5" stop-color="#2563EB"/><stop offset="1" stop-color="#38BDF8"/></linearGradient></defs>
+                <path class="wire" d="M150,120 C320,120 360,210 520,210"/><path class="wire-live" d="M150,120 C320,120 360,210 520,210"/>
+                <path class="wire" d="M150,210 H520"/><path class="wire-live" d="M150,210 H520"/>
+                <path class="wire" d="M150,300 C320,300 360,210 520,210"/><path class="wire-live" d="M150,300 C320,300 360,210 520,210"/>
+                <path class="wire" d="M520,210 C700,210 740,120 890,120"/><path class="wire-live" d="M520,210 C700,210 740,120 890,120"/>
+                <path class="wire" d="M520,210 H890"/><path class="wire-live" d="M520,210 H890"/>
+                <path class="wire" d="M520,210 C700,210 740,300 890,300"/><path class="wire-live" d="M520,210 C700,210 740,300 890,300"/>
+              </svg>
+              <span class="pulse" style="background:var(--blue);box-shadow:0 0 10px 2px rgba(37,99,235,.6);offset-path:path('M150,120 C320,120 360,210 520,210')"></span>
+              <span class="pulse" style="background:var(--blue);box-shadow:0 0 10px 2px rgba(37,99,235,.6);offset-path:path('M150,210 H520');animation-delay:.4s"></span>
+              <span class="pulse" style="background:var(--blue);box-shadow:0 0 10px 2px rgba(37,99,235,.6);offset-path:path('M150,300 C320,300 360,210 520,210');animation-delay:.8s"></span>
+              <span class="pulse" style="background:var(--bright);box-shadow:0 0 10px 2px rgba(56,189,248,.6);offset-path:path('M520,210 H890');animation-delay:1s"></span>
+              <span class="pulse" style="background:var(--bright);box-shadow:0 0 10px 2px rgba(56,189,248,.6);offset-path:path('M520,210 C700,210 740,120 890,120');animation-delay:1.3s"></span>
+              <span class="pulse" style="background:var(--bright);box-shadow:0 0 10px 2px rgba(56,189,248,.6);offset-path:path('M520,210 C700,210 740,300 890,300');animation-delay:1.6s"></span>
+
+              <div class="ftile in i1" style="left:90px;top:120px"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><rect x="3.5" y="5" width="17" height="15" rx="2.5"/><path d="M3.5 9.5h17M8 3.5v3M16 3.5v3" stroke-linecap="round"/></svg></div>
+              <div class="ftile in i2" style="left:90px;top:210px"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><rect x="3" y="5.5" width="18" height="13" rx="2.5"/><path d="M4 7.5l8 5.5 8-5.5" stroke-linecap="round"/></svg></div>
+              <div class="ftile in i3" style="left:90px;top:300px"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><rect x="4" y="3.5" width="16" height="17" rx="2.5"/><path d="M4 9h16M4 14.5h16M9.5 9v11.5" stroke-linecap="round"/></svg></div>
+              <div class="ftile out o1" style="left:950px;top:120px"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M6 3.5h7l5 5v12a1 1 0 0 1-1 1H6a1 1 0 0 1-1-1V4.5a1 1 0 0 1 1-1Z"/><path d="M13 3.5V8.5h5" stroke-linecap="round"/></svg></div>
+              <div class="ftile out o2" style="left:950px;top:210px"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M4 6.5A2.5 2.5 0 0 1 6.5 4h11A2.5 2.5 0 0 1 20 6.5v7a2.5 2.5 0 0 1-2.5 2.5H9l-4 3.5v-3.5H6.5" stroke-linecap="round"/></svg></div>
+              <div class="ftile out o3" style="left:950px;top:300px"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><rect x="4" y="4" width="16" height="16" rx="3"/><path d="M8 12l2.5 2.5L16 9" stroke-linecap="round"/></svg></div>
+
+              <div class="core"><span class="ring"></span><span class="ring r2"></span><span class="disc"><svg style="width:54px;height:54px" viewBox="25 10 180 180" fill="none"><defs><linearGradient id="cs" x1="185" y1="35" x2="45" y2="165" gradientUnits="userSpaceOnUse"><stop stop-color="#38BDF8"/><stop offset=".55" stop-color="#2563EB"/><stop offset="1" stop-color="#1E40AF"/></linearGradient></defs><g fill="url(#cs)"><rect x="100" y="14" width="30" height="68" rx="15" transform="rotate(30 115 100)"/><rect x="100" y="14" width="30" height="68" rx="15" transform="rotate(90 115 100)"/><rect x="100" y="14" width="30" height="68" rx="15" transform="rotate(150 115 100)"/><rect x="100" y="14" width="30" height="68" rx="15" transform="rotate(210 115 100)"/><rect x="100" y="14" width="30" height="68" rx="15" transform="rotate(270 115 100)"/><rect x="100" y="14" width="30" height="68" rx="15" transform="rotate(330 115 100)"/></g></svg></span></div>
+            </div>
+            <h2 class="rise d3" style="font-size:50px;margin-top:6px" data-de='Luumos verbindet, <span class="grad-text">was Sie schon nutzen.</span>' data-en='Luumos connects <span class="grad-text">the tools you already run.</span>'></h2>
+          </div>
+        </section>
+
+        <section class="scene" data-at="19500">
+          <div class="center">
+            <div class="pillars">
+              <div class="pillar"><div class="badge"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><rect x="3.5" y="4" width="6" height="5" rx="1.5"/><rect x="14.5" y="15" width="6" height="5" rx="1.5"/><path d="M6.5 9v4.5a2 2 0 0 0 2 2h6" stroke-linecap="round"/></svg></div><h3 data-de="Automatisieren" data-en="Automate"></h3></div>
+              <div class="pillar"><div class="badge"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M12 4l1.6 4.4L18 10l-4.4 1.6L12 16l-1.6-4.4L6 10l4.4-1.6L12 4Z" stroke-linejoin="round"/></svg></div><h3 data-de="KI-Agenten" data-en="AI agents"></h3></div>
+              <div class="pillar"><div class="badge"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><circle cx="12" cy="12" r="3.2"/><path d="M12 2.8v2.4M12 18.8v2.4M21.2 12h-2.4M5.2 12H2.8M18.5 5.5l-1.7 1.7M7.2 16.8l-1.7 1.7M18.5 18.5l-1.7-1.7M7.2 7.2 5.5 5.5" stroke-linecap="round"/></svg></div><h3 data-de="Integrieren" data-en="Integrate"></h3></div>
+            </div>
+          </div>
+        </section>
+
+        <section class="scene" data-at="26500">
+          <div class="center">
+            <div class="count"><span class="grad-text">+<span id="num">0</span></span></div>
+            <div class="unit rise d1" data-de="Stunden pro Woche zurück" data-en="hours per week, back"></div>
+            <p class="lead rise d2" style="margin-top:22px" data-de="Für Arbeit, die wirklich zählt." data-en="For the work that actually matters."></p>
+          </div>
+        </section>
+
+        <section class="scene" data-at="33000">
+          <div class="center">
+            <div class="lockup rise">
+              <svg class="spark" viewBox="25 10 180 180" fill="none"><defs><linearGradient id="ls" x1="185" y1="35" x2="45" y2="165" gradientUnits="userSpaceOnUse"><stop stop-color="#38BDF8"/><stop offset=".55" stop-color="#2563EB"/><stop offset="1" stop-color="#1E40AF"/></linearGradient></defs><g fill="url(#ls)"><rect x="100" y="14" width="30" height="68" rx="15" transform="rotate(30 115 100)"/><rect x="100" y="14" width="30" height="68" rx="15" transform="rotate(90 115 100)"/><rect x="100" y="14" width="30" height="68" rx="15" transform="rotate(150 115 100)"/><rect x="100" y="14" width="30" height="68" rx="15" transform="rotate(210 115 100)"/><rect x="100" y="14" width="30" height="68" rx="15" transform="rotate(270 115 100)"/><rect x="100" y="14" width="30" height="68" rx="15" transform="rotate(330 115 100)"/></g></svg>
+              <img class="word-img" src="luumos-wordmark.png" alt="Luumos" />
+            </div>
+            <div class="rise d2"><span class="pill" data-de="Beratung buchen&nbsp; ·&nbsp; luumos.ch" data-en="Book a consult&nbsp; ·&nbsp; luumos.ch"></span></div>
+          </div>
+        </section>
+
+        <div class="bar"><i id="prog"></i></div>
+      </div>
+    </div>
+
+    <script>
+      var lang = new URLSearchParams(location.search).get('lang') === 'en' ? 'en' : 'de'
+      document.documentElement.lang = lang
+      document.querySelectorAll('[data-de]').forEach(function (el) { el.innerHTML = el.getAttribute('data-' + lang) })
+
+      // ---- scene 1 typewriter: types "Minuten", deletes it, types "Stunden" ----
+      var TW = {
+        de: { pre: 'Ihr Team verliert ', a: 'Minuten', b: 'Stunden', post: 'an Tool-Wechsel.' },
+        en: { pre: 'Your team loses ', a: 'minutes', b: 'hours', post: 'switching tools.' },
+      }
+      var twTimers = []
+      function twClear() { twTimers.forEach(clearTimeout); twTimers = [] }
+      function wait(ms) { return new Promise(function (res) { twTimers.push(setTimeout(res, ms)) }) }
+      function typeInto(el, text, sp) {
+        el.insertAdjacentElement('afterend', document.getElementById('caret'))
+        return new Promise(function (res) {
+          var i = 0
+          ;(function step() { el.textContent = text.slice(0, ++i); i < text.length ? twTimers.push(setTimeout(step, sp)) : res() })()
+        })
+      }
+      function delTo(el, sp) {
+        return new Promise(function (res) {
+          ;(function step() { el.textContent = el.textContent.slice(0, -1); el.textContent.length ? twTimers.push(setTimeout(step, sp)) : res() })()
+        })
+      }
+      async function runTW() {
+        twClear()
+        var t = TW[lang], pre = document.getElementById('twPre'), word = document.getElementById('twWord'), post = document.getElementById('twPost'), caret = document.getElementById('caret')
+        pre.textContent = ''; word.textContent = ''; post.textContent = ''; caret.classList.remove('off')
+        await typeInto(pre, t.pre, 40)
+        await typeInto(word, t.a, 62)
+        await wait(700)
+        await delTo(word, 46)
+        await typeInto(word, t.b, 72)
+        await wait(300)
+        await typeInto(post, t.post, 40)
+        caret.classList.add('off')
+      }
+
+      var DUR = 39000
+      var scenes = [].map.call(document.querySelectorAll('.scene'), function (el) { return { el: el, at: +el.dataset.at } })
+      var prog = document.getElementById('prog')
+      var num = document.getElementById('num')
+      var raf, start, countId, cur = -1
+
+      function fit() {
+        var st = document.getElementById('stage')
+        var w = st.parentElement.clientWidth, h = st.parentElement.clientHeight
+        st.style.setProperty('--s', Math.min(w / 1280, h / 720))
+      }
+      addEventListener('resize', fit); fit()
+
+      function setScene(i) {
+        if (i === cur) return; cur = i
+        scenes.forEach(function (s, j) { s.el.classList.toggle('on', j === i) })
+        if (i === 4) runCounter()
+      }
+      function runCounter() {
+        clearInterval(countId); var v = 0; num.textContent = '0'
+        countId = setInterval(function () { v++; num.textContent = v; if (v >= 12) clearInterval(countId) }, 80)
+      }
+      function tick(t) {
+        if (!start) start = t
+        var e = t - start
+        prog.style.width = Math.min(100, (e / DUR) * 100) + '%'
+        var idx = 0
+        scenes.forEach(function (s, j) { if (e >= s.at) idx = j })
+        setScene(idx)
+        if (e < DUR + 1500) raf = requestAnimationFrame(tick); else play()
+      }
+      function play() { cancelAnimationFrame(raf); clearInterval(countId); twClear(); start = null; cur = -1; num.textContent = '0'; setScene(0); runTW(); raf = requestAnimationFrame(tick) }
+      play()
+    </script>
+  </body>
+</html>
