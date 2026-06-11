@@ -1,0 +1,289 @@
+<!doctype html>
+<html lang="de">
+  <head>
+    <meta charset="utf-8" />
+    <title>Luumos — Motion draft (live ansehen)</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      :root {
+        --deep: #1e40af;
+        --blue: #2563eb;
+        --bright: #38bdf8;
+        --grad: linear-gradient(120deg, #1e40af, #2563eb 48%, #38bdf8);
+        --ink: #14161c;
+        --muted: #565b67;
+        --line: #e7ebf2;
+        --ease: cubic-bezier(0.22, 1, 0.36, 1);
+      }
+      * { margin: 0; box-sizing: border-box; }
+      body {
+        font-family: 'Geist', -apple-system, 'Helvetica Neue', Arial, sans-serif;
+        background: #0b0d12;
+        min-height: 100vh;
+        display: grid;
+        place-items: center;
+        color: var(--ink);
+      }
+      /* Fixed 1280x720 stage, scaled to fit the viewport */
+      .scaler { width: 100vw; height: 56.25vw; max-height: 100vh; max-width: 177.78vh; display: grid; place-items: center; }
+      .stage {
+        position: relative;
+        width: 1280px;
+        height: 720px;
+        transform: scale(var(--s, 1));
+        transform-origin: center;
+        overflow: hidden;
+        background: radial-gradient(120% 120% at 80% -10%, #eef4ff 0%, #ffffff 45%, #f7f9fc 100%);
+        border-radius: 2px;
+      }
+      .grid {
+        position: absolute; inset: 0; opacity: 0.5;
+        background-image: linear-gradient(var(--line) 1px, transparent 1px),
+          linear-gradient(90deg, var(--line) 1px, transparent 1px);
+        background-size: 64px 64px;
+        -webkit-mask-image: radial-gradient(80% 80% at 50% 45%, #000 30%, transparent 75%);
+        mask-image: radial-gradient(80% 80% at 50% 45%, #000 30%, transparent 75%);
+      }
+
+      /* ---- scene scaffolding ---- */
+      .scene { position: absolute; inset: 0; display: grid; place-items: center; opacity: 0; pointer-events: none; }
+      .scene.on { opacity: 1; }
+      .scene { transition: opacity 0.5s var(--ease); }
+      .center { text-align: center; padding: 0 120px; }
+      h2 { font-size: 72px; font-weight: 600; letter-spacing: -0.03em; line-height: 1.05; }
+      .lead { font-size: 38px; font-weight: 500; color: var(--muted); }
+      .grad-text { background: var(--grad); -webkit-background-clip: text; background-clip: text; color: transparent; }
+
+      /* enter animations applied when a scene turns on */
+      .scene.on .rise { animation: rise 0.7s var(--ease) both; }
+      .scene.on .rise.d1 { animation-delay: 0.12s; }
+      .scene.on .rise.d2 { animation-delay: 0.24s; }
+      .scene.on .rise.d3 { animation-delay: 0.36s; }
+      @keyframes rise { from { opacity: 0; transform: translateY(26px); } to { opacity: 1; transform: none; } }
+
+      /* ---- scene 2: scattered tools ---- */
+      .tiles { position: relative; width: 760px; height: 360px; }
+      .tile {
+        position: absolute; width: 96px; height: 96px; display: grid; place-items: center;
+        background: #fff; border: 1px solid var(--line); border-radius: 22px;
+        box-shadow: 0 18px 40px -26px rgba(22,21,26,.5); color: #2c2a33;
+      }
+      .tile svg { width: 44px; height: 44px; }
+      .tag { position: absolute; font-size: 18px; font-weight: 600; color: #b04a4a; background: #fdeaea; padding: 4px 12px; border-radius: 999px; }
+      .scene.on .float { animation: float 3.2s ease-in-out infinite; }
+      @keyframes float { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-12px); } }
+
+      /* ---- scene 3: flow ---- */
+      .flow { position: relative; width: 1040px; height: 460px; }
+      .flow svg.wires { position: absolute; inset: 0; width: 100%; height: 100%; overflow: visible; }
+      .wire { stroke: var(--line); stroke-width: 2; stroke-dasharray: 2 8; stroke-linecap: round; }
+      .wire-live { stroke: url(#fg); stroke-width: 2; stroke-dasharray: 3 10; opacity: .6; }
+      .scene.on .wire-live { animation: dash 1s linear infinite; }
+      @keyframes dash { to { stroke-dashoffset: -22; } }
+      .ftile {
+        position: absolute; width: 84px; height: 84px; transform: translate(-50%,-50%);
+        display: grid; place-items: center; background: #fff; border: 1px solid var(--line);
+        border-radius: 18px; box-shadow: 0 14px 30px -22px rgba(22,21,26,.55); opacity: 0;
+      }
+      .ftile svg { width: 38px; height: 38px; }
+      .ftile.in svg { color: #2c2a33; } .ftile.out svg { color: var(--blue); }
+      .scene.on .ftile { animation: pop 0.5s var(--ease) both; }
+      @keyframes pop { from { opacity: 0; transform: translate(-50%,-50%) scale(.8);} to { opacity:1; transform: translate(-50%,-50%) scale(1);} }
+      .core {
+        position: absolute; left: 50%; top: 50%; transform: translate(-50%,-50%);
+        width: 132px; height: 132px; display: grid; place-items: center; opacity: 0;
+      }
+      .scene.on .core { animation: pop 0.6s var(--ease) 0.2s both; }
+      .disc { width: 116px; height: 116px; border-radius: 50%; display: grid; place-items: center;
+        background: radial-gradient(circle at 50% 38%, #fff, #f4f9ff 60%, #e7f1ff);
+        border: 1px solid color-mix(in srgb, var(--blue) 24%, var(--line));
+        box-shadow: 0 0 0 10px rgba(37,99,235,.06), 0 18px 50px -16px rgba(37,99,235,.45); }
+      .ring { position: absolute; width: 116px; height: 116px; border-radius: 50%; border: 2px solid var(--blue); opacity: 0; }
+      .scene.on .ring { animation: ring 3s ease-out infinite; }
+      .scene.on .ring.r2 { animation-delay: 1.5s; border-color: var(--bright); }
+      @keyframes ring { 0% { transform: scale(.7); opacity:.5;} 100% { transform: scale(1.8); opacity:0;} }
+      .pulse { position: absolute; top: 0; left: 0; width: 12px; height: 12px; margin: -6px 0 0 -6px; border-radius: 50%; }
+      .scene.on .pulse { animation: travel 2s linear infinite; }
+      @keyframes travel { from { offset-distance: 0%; opacity: 0; } 12% { opacity: 1; } 88% { opacity: 1; } to { offset-distance: 100%; opacity: 0; } }
+
+      /* ---- scene 4: pillars ---- */
+      .pillars { display: flex; gap: 36px; }
+      .pillar { width: 240px; text-align: center; }
+      .badge { width: 80px; height: 80px; margin: 0 auto 22px; border-radius: 22px; display: grid; place-items: center;
+        background: var(--grad); color: #fff; box-shadow: 0 16px 30px -16px rgba(37,99,235,.6); }
+      .badge svg { width: 38px; height: 38px; }
+      .pillar h3 { font-size: 30px; font-weight: 600; }
+
+      /* ---- scene 5: counter ---- */
+      .count { font-size: 168px; font-weight: 700; letter-spacing: -0.04em; line-height: 1; }
+      .unit { font-size: 40px; font-weight: 600; color: var(--muted); margin-top: 6px; }
+
+      /* ---- scene 6: lockup ---- */
+      .lockup { display: flex; align-items: center; gap: 22px; }
+      .lockup .spark { width: 92px; height: 92px; }
+      .lockup .word { font-size: 86px; font-weight: 700; letter-spacing: -0.04em; }
+      .pill { margin-top: 40px; display: inline-flex; align-items: center; gap: 12px; padding: 18px 34px;
+        font-size: 30px; font-weight: 600; color: #fff; border-radius: 999px; background: var(--grad);
+        box-shadow: 0 18px 40px -16px rgba(37,99,235,.6); }
+
+      /* ---- transport ---- */
+      .bar { position: fixed; left: 0; right: 0; bottom: 0; height: 4px; background: rgba(255,255,255,.12); }
+      .bar i { display: block; height: 100%; width: 0; background: var(--grad); }
+      .replay { position: fixed; right: 18px; bottom: 18px; padding: 10px 18px; border: none; border-radius: 999px;
+        background: #fff; color: var(--ink); font: 600 15px 'Geist', sans-serif; cursor: pointer; opacity: .9; }
+      .cap { position: fixed; left: 18px; bottom: 16px; color: rgba(255,255,255,.5); font-size: 13px; }
+    </style>
+  </head>
+  <body>
+    <div class="scaler">
+      <div class="stage" id="stage">
+        <div class="grid"></div>
+
+        <!-- 1 -->
+        <section class="scene" data-at="0">
+          <div class="center">
+            <h2 class="rise">Ihr Team verliert <span class="grad-text">Stunden</span><br />an Tool-Wechsel.</h2>
+          </div>
+        </section>
+
+        <!-- 2 -->
+        <section class="scene" data-at="5000">
+          <div class="center">
+            <div class="tiles">
+              <div class="tile float" style="left:40px;top:30px">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><rect x="3.5" y="5" width="17" height="15" rx="2.5"/><path d="M3.5 9.5h17M8 3.5v3M16 3.5v3" stroke-linecap="round"/></svg>
+              </div>
+              <div class="tile float" style="left:330px;top:150px;animation-delay:.4s">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><rect x="3" y="5.5" width="18" height="13" rx="2.5"/><path d="M4 7.5l8 5.5 8-5.5" stroke-linecap="round"/></svg>
+              </div>
+              <div class="tile float" style="left:620px;top:40px;animation-delay:.8s">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><rect x="4" y="3.5" width="16" height="17" rx="2.5"/><path d="M4 9h16M4 14.5h16M9.5 9v11.5" stroke-linecap="round"/></svg>
+              </div>
+              <span class="tag float" style="left:150px;top:150px">manuell</span>
+              <span class="tag float" style="left:470px;top:60px;animation-delay:.5s">manuell</span>
+              <span class="tag float" style="left:640px;top:230px;animation-delay:.9s">manuell</span>
+            </div>
+            <p class="lead rise d2" style="margin-top:30px">E-Mails. Termine. Daten. <strong style="color:var(--ink)">Alles von Hand.</strong></p>
+          </div>
+        </section>
+
+        <!-- 3 -->
+        <section class="scene" data-at="13000">
+          <div class="center">
+            <div class="flow">
+              <svg class="wires" viewBox="0 0 1040 460" preserveAspectRatio="none">
+                <defs><linearGradient id="fg" x1="0" y1="0" x2="1040" y2="0" gradientUnits="userSpaceOnUse">
+                  <stop offset="0" stop-color="#1E40AF"/><stop offset=".5" stop-color="#2563EB"/><stop offset="1" stop-color="#38BDF8"/></linearGradient></defs>
+                <g>
+                  <path class="wire" d="M150,140 C320,140 360,230 520,230"/><path class="wire-live" d="M150,140 C320,140 360,230 520,230"/>
+                  <path class="wire" d="M150,230 H520"/><path class="wire-live" d="M150,230 H520"/>
+                  <path class="wire" d="M150,320 C320,320 360,230 520,230"/><path class="wire-live" d="M150,320 C320,320 360,230 520,230"/>
+                  <path class="wire" d="M520,230 C700,230 740,140 890,140"/><path class="wire-live" d="M520,230 C700,230 740,140 890,140"/>
+                  <path class="wire" d="M520,230 H890"/><path class="wire-live" d="M520,230 H890"/>
+                  <path class="wire" d="M520,230 C700,230 740,320 890,320"/><path class="wire-live" d="M520,230 C700,230 740,320 890,320"/>
+                </g>
+              </svg>
+              <span class="pulse" style="background:var(--blue);box-shadow:0 0 10px 2px rgba(37,99,235,.6);offset-path:path('M150,140 C320,140 360,230 520,230')"></span>
+              <span class="pulse" style="background:var(--blue);box-shadow:0 0 10px 2px rgba(37,99,235,.6);offset-path:path('M150,230 H520');animation-delay:.5s"></span>
+              <span class="pulse" style="background:var(--bright);box-shadow:0 0 10px 2px rgba(56,189,248,.6);offset-path:path('M520,230 H890');animation-delay:.9s"></span>
+              <span class="pulse" style="background:var(--bright);box-shadow:0 0 10px 2px rgba(56,189,248,.6);offset-path:path('M520,230 C700,230 740,140 890,140');animation-delay:1.2s"></span>
+
+              <div class="ftile in" style="left:90px;top:140px"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><rect x="3.5" y="5" width="17" height="15" rx="2.5"/><path d="M3.5 9.5h17M8 3.5v3M16 3.5v3" stroke-linecap="round"/></svg></div>
+              <div class="ftile in" style="left:90px;top:230px"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><rect x="3" y="5.5" width="18" height="13" rx="2.5"/><path d="M4 7.5l8 5.5 8-5.5" stroke-linecap="round"/></svg></div>
+              <div class="ftile in" style="left:90px;top:320px"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><rect x="4" y="3.5" width="16" height="17" rx="2.5"/><path d="M4 9h16M4 14.5h16M9.5 9v11.5" stroke-linecap="round"/></svg></div>
+              <div class="ftile out" style="left:950px;top:140px"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M6 3.5h7l5 5v12a1 1 0 0 1-1 1H6a1 1 0 0 1-1-1V4.5a1 1 0 0 1 1-1Z"/><path d="M13 3.5V8.5h5" stroke-linecap="round"/></svg></div>
+              <div class="ftile out" style="left:950px;top:230px"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M4 6.5A2.5 2.5 0 0 1 6.5 4h11A2.5 2.5 0 0 1 20 6.5v7a2.5 2.5 0 0 1-2.5 2.5H9l-4 3.5v-3.5H6.5" stroke-linecap="round"/></svg></div>
+              <div class="ftile out" style="left:950px;top:320px"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><rect x="4" y="4" width="16" height="16" rx="3"/><path d="M8 12l2.5 2.5L16 9" stroke-linecap="round"/></svg></div>
+
+              <div class="core">
+                <span class="ring"></span><span class="ring r2"></span>
+                <span class="disc">
+                  <svg style="width:54px;height:54px" viewBox="25 10 180 180" fill="none"><defs><linearGradient id="cs" x1="185" y1="35" x2="45" y2="165" gradientUnits="userSpaceOnUse"><stop stop-color="#38BDF8"/><stop offset=".55" stop-color="#2563EB"/><stop offset="1" stop-color="#1E40AF"/></linearGradient></defs><g fill="url(#cs)"><rect x="100" y="14" width="30" height="68" rx="15" transform="rotate(30 115 100)"/><rect x="100" y="14" width="30" height="68" rx="15" transform="rotate(90 115 100)"/><rect x="100" y="14" width="30" height="68" rx="15" transform="rotate(150 115 100)"/><rect x="100" y="14" width="30" height="68" rx="15" transform="rotate(210 115 100)"/><rect x="100" y="14" width="30" height="68" rx="15" transform="rotate(270 115 100)"/><rect x="100" y="14" width="30" height="68" rx="15" transform="rotate(330 115 100)"/></g></svg>
+                </span>
+              </div>
+            </div>
+            <h2 class="rise d3" style="font-size:52px;margin-top:10px">Luumos verbindet, <span class="grad-text">was Sie schon nutzen.</span></h2>
+          </div>
+        </section>
+
+        <!-- 4 -->
+        <section class="scene" data-at="26000">
+          <div class="center">
+            <div class="pillars">
+              <div class="pillar rise"><div class="badge"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><rect x="3.5" y="4" width="6" height="5" rx="1.5"/><rect x="14.5" y="15" width="6" height="5" rx="1.5"/><path d="M6.5 9v4.5a2 2 0 0 0 2 2h6" stroke-linecap="round"/></svg></div><h3>Automatisieren</h3></div>
+              <div class="pillar rise d1"><div class="badge"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M12 4l1.6 4.4L18 10l-4.4 1.6L12 16l-1.6-4.4L6 10l4.4-1.6L12 4Z" stroke-linejoin="round"/></svg></div><h3>KI-Agenten</h3></div>
+              <div class="pillar rise d2"><div class="badge"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><circle cx="12" cy="12" r="3.2"/><path d="M12 2.8v2.4M12 18.8v2.4M21.2 12h-2.4M5.2 12H2.8M18.5 5.5l-1.7 1.7M7.2 16.8l-1.7 1.7M18.5 18.5l-1.7-1.7M7.2 7.2 5.5 5.5" stroke-linecap="round"/></svg></div><h3>Integrieren</h3></div>
+            </div>
+          </div>
+        </section>
+
+        <!-- 5 -->
+        <section class="scene" data-at="37000">
+          <div class="center">
+            <div class="count rise"><span class="grad-text">+<span id="num">0</span></span></div>
+            <div class="unit rise d1">Stunden pro Woche zurück</div>
+            <p class="lead rise d2" style="margin-top:26px">Für Arbeit, die wirklich zählt.</p>
+          </div>
+        </section>
+
+        <!-- 6 -->
+        <section class="scene" data-at="48000">
+          <div class="center">
+            <div class="lockup rise">
+              <svg class="spark" viewBox="25 10 180 180" fill="none"><defs><linearGradient id="ls" x1="185" y1="35" x2="45" y2="165" gradientUnits="userSpaceOnUse"><stop stop-color="#38BDF8"/><stop offset=".55" stop-color="#2563EB"/><stop offset="1" stop-color="#1E40AF"/></linearGradient></defs><g fill="url(#ls)"><rect x="100" y="14" width="30" height="68" rx="15" transform="rotate(30 115 100)"/><rect x="100" y="14" width="30" height="68" rx="15" transform="rotate(90 115 100)"/><rect x="100" y="14" width="30" height="68" rx="15" transform="rotate(150 115 100)"/><rect x="100" y="14" width="30" height="68" rx="15" transform="rotate(210 115 100)"/><rect x="100" y="14" width="30" height="68" rx="15" transform="rotate(270 115 100)"/><rect x="100" y="14" width="30" height="68" rx="15" transform="rotate(330 115 100)"/></g></svg>
+              <span class="word">luumos</span>
+            </div>
+            <div class="rise d2"><span class="pill">Beratung buchen&nbsp; ·&nbsp; luumos.ch</span></div>
+          </div>
+        </section>
+
+        <div class="bar"><i id="prog"></i></div>
+      </div>
+    </div>
+    <button class="replay" onclick="play()">↻ Replay</button>
+    <div class="cap">Luumos motion draft · ~58s · German cut (EN mirror in storyboard) · placeholder copy/figures</div>
+
+    <script>
+      const DUR = 58000
+      const scenes = [...document.querySelectorAll('.scene')].map((el) => ({ el, at: +el.dataset.at }))
+      const prog = document.getElementById('prog')
+      const num = document.getElementById('num')
+      let raf, start, countId
+
+      function fit() {
+        const st = document.getElementById('stage')
+        const w = st.parentElement.clientWidth, h = st.parentElement.clientHeight
+        st.style.setProperty('--s', Math.min(w / 1280, h / 720))
+      }
+      addEventListener('resize', fit); fit()
+
+      function setScene(i) {
+        scenes.forEach((s, j) => s.el.classList.toggle('on', j === i))
+        if (i === 4) runCounter()
+      }
+      function runCounter() {
+        clearInterval(countId); let v = 0
+        countId = setInterval(() => { v++; num.textContent = v; if (v >= 12) clearInterval(countId) }, 70)
+      }
+      function tick(t) {
+        if (!start) start = t
+        const e = t - start
+        prog.style.width = Math.min(100, (e / DUR) * 100) + '%'
+        let idx = 0
+        scenes.forEach((s, j) => { if (e >= s.at) idx = j })
+        if (!scenes[idx].el.classList.contains('on')) setScene(idx)
+        if (e < DUR) raf = requestAnimationFrame(tick)
+      }
+      function play() {
+        cancelAnimationFrame(raf); clearInterval(countId); start = null
+        num.textContent = '0'; setScene(0); raf = requestAnimationFrame(tick)
+      }
+      play()
+    </script>
+  </body>
+</html>
