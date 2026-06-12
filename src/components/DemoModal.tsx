@@ -27,8 +27,9 @@ export default function DemoModal({ open, onClose, lang }: Props) {
           ✕
         </button>
         <div className="demo__frame">
-          {/* The animated explainer lives in public/motion.html; ?lang follows the site locale. */}
-          <iframe src={`/motion.html?lang=${lang}`} title="Luumos — live ansehen" allow="autoplay" loading="eager" />
+          {/* The animated explainer lives in public/motion.html; ?lang follows the site
+              locale. Bump v= whenever motion.html changes to bust the static-asset cache. */}
+          <iframe src={`/motion.html?lang=${lang}&v=3`} title="Luumos — live ansehen" allow="autoplay" loading="eager" />
         </div>
       </div>
     </div>
