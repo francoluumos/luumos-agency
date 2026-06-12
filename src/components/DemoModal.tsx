@@ -1,9 +1,12 @@
-import { useEffect } from 'react'
+import { useEffect, useMemo } from 'react'
 import './DemoModal.css'
 
 type Props = { open: boolean; onClose: () => void; lang: string }
 
 export default function DemoModal({ open, onClose, lang }: Props) {
+  // Fresh token each time the modal opens → the player HTML is never served stale.
+  const bust = useMemo(() => (open ? Date.now() : 0), [open])
+
   useEffect(() => {
     if (!open) return
     const onKey = (e: KeyboardEvent) => {
@@ -28,8 +31,8 @@ export default function DemoModal({ open, onClose, lang }: Props) {
         </button>
         <div className="demo__frame">
           {/* The animated explainer lives in public/motion.html; ?lang follows the site
-              locale. Bump v= whenever motion.html changes to bust the static-asset cache. */}
-          <iframe src={`/motion.html?lang=${lang}&v=3`} title="Luumos — live ansehen" allow="autoplay" loading="eager" />
+              locale, &t= busts the static-asset cache on every open. */}
+          <iframe src={`/motion.html?lang=${lang}&t=${bust}`} title="Luumos — live ansehen" allow="autoplay" loading="eager" />
         </div>
       </div>
     </div>
