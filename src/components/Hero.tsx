@@ -33,7 +33,7 @@ export default function Hero() {
           <a className="hero__cta" href={COMPANY.bookingUrl} target="_blank" rel="noopener noreferrer">
             {t('hero.cta')}
           </a>
-          <button className="hero__demo" type="button" onClick={() => setDemoOpen(true)}>
+          <button className="hero__demo" type="button" data-testid="demo-open" onClick={() => setDemoOpen(true)}>
             <span className="hero__demo-play">▶</span>
             {t('hero.demo')}
           </button>

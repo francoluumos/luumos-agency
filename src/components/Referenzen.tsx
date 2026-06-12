@@ -71,7 +71,7 @@ export default function Referenzen() {
           {items.map((ind, i) => {
             const Icon = INDUSTRY_ICONS[i] ?? Briefcase
             return (
-              <article className={`refs__card${i === active ? ' is-active' : ''}`} key={ind.name}>
+              <article className={`refs__card${i === active ? ' is-active' : ''}`} key={ind.name} data-testid="ref-card">
                 <div className="refs__card-badge">
                   <Icon />
                 </div>
@@ -118,6 +118,7 @@ export default function Referenzen() {
         <button
           type="button"
           className="refs__nav refs__nav--next"
+          data-testid="ref-next"
           onClick={() => goTo(active + 1)}
           aria-label={t('referenzen.next')}
         >

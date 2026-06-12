@@ -6,7 +6,12 @@
   "scripts": {
     "dev": "vite",
     "build": "tsc && vite build",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "test": "playwright test",
+    "test:chromium": "playwright test --project=chromium",
+    "test:ui": "playwright test --ui",
+    "test:report": "playwright show-report --port 9381",
+    "test:archive": "node scripts/test-archive.mjs"
   },
   "dependencies": {
     "i18next": "^26.3.1",
@@ -17,6 +22,7 @@
     "react-router-dom": "^7.17.0"
   },
   "devDependencies": {
+    "@playwright/test": "^1.60.0",
     "@types/react": "^18.3.12",
     "@types/react-dom": "^18.3.1",
     "@vitejs/plugin-react": "^4.3.4",

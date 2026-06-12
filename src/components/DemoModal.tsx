@@ -42,7 +42,7 @@ export default function DemoModal({ open, onClose, lang }: Props) {
   if (!open) return null
 
   return (
-    <div className="demo" role="dialog" aria-modal="true" onClick={onClose}>
+    <div className="demo" role="dialog" aria-modal="true" data-testid="demo-modal" onClick={onClose}>
       <div className="demo__panel" onClick={(e) => e.stopPropagation()}>
         <button className="demo__close" type="button" onClick={onClose} aria-label="Schliessen">
           ✕

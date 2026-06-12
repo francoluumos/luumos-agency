@@ -42,6 +42,7 @@ export default function FAQ() {
                 <button
                   type="button"
                   className="faq__q"
+                  data-testid="faq-q"
                   aria-expanded={isOpen}
                   onClick={() => setOpen(isOpen ? null : i)}
                 >
