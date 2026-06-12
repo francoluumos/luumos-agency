@@ -3,27 +3,33 @@
 Read this first on a new start; update it at the end of every session. The full
 roadmap lives in **BACKLOG.md**; infra/gating in **DEPLOY.md**.
 
-## ▶ Pick up here — as of 2026-06-11
+## ▶ Pick up here — as of 2026-06-12
 
-**State (all committed + pushed to `staging` AND `main`; tip `55b313a`):** the
+**State (all committed + pushed to `staging` AND `main`; tip `ceba9f0`):** the
 bilingual (DE/EN) landing page is **deployed**. `main` → Vercel Production
 (`luumos.ch`/`www.luumos.ch`), `staging` → Preview (`staging.luumos.ch`).
 Production stays behind the Basic-auth gate as long as `SITE_PASSWORD` is set on
 the Production scope — **go live = remove `SITE_PASSWORD` from Production only**
 (DEPLOY.md §3).
 
-**Live on the page:** hero + animated tool-flow visual · TrustBar (mobile
+**Live on the page:** hero + animated tool-flow visual · **"Live ansehen"** video
+modal (animated explainer, `public/motion.html`, DE/EN) · TrustBar (mobile
 marquee) · Services · How-it-works · **Referenzen** (industry-card carousel,
 touch-swipe + arrows) · CTA · **FAQ** (FAQPage schema) · footer. Header + footer
 links anchor to sections. **Cookie consent** banner gates analytics. Full
-**SEO/GEO** pass (meta, OG, JSON-LD, robots.txt, sitemap.xml, German keywords).
-Scroll-reveal + button press animations. Booking links → Google Calendar.
+**SEO/GEO** pass (meta, OG image, JSON-LD, robots.txt, sitemap.xml, German
+keywords). Scroll-reveal + button press animations. Booking links → Google Cal.
 
-**Domain: `luumos.ch`** (confirmed 2026-06-11 — NOT .io). All SEO uses it.
+**Tests:** Playwright **E2E harness** (5 browsers, preview port 4181) — `npm test`,
+99 pass. See **TESTING.md**. CI runs on push/PR to main+staging; a pre-push hook
+runs it locally too (`core.hooksPath .githooks`; skip with `SKIP_E2E_HOOK=1`).
 
-**Immediate next (pick any):** see BACKLOG.md. Highest-impact: add
-`public/og-image.png` (1200×630); consider SSG/prerender (SPA hurts AI-crawler
-pickup); replace invented Referenzen examples with real ones; legal review.
+**Domain: `luumos.ch`** (confirmed — NOT .io). All SEO uses it.
+
+**⚠️ Immediate next:** **restart Claude Code** (or `/mcp` → reconnect) to load the
+**Playwright MCP** (`.mcp.json`) — needed to drive a live browser when authoring
+specs. Then see BACKLOG.md: SSG/prerender · real Referenzen examples · legal
+review · wire PostHog · cookie-withdraw link.
 
 ## How to run / deploy
 ```bash
@@ -55,12 +61,18 @@ airy, single blue gradient accent (`#1E40AF`→`#2563EB`→`#38BDF8`), Geist.
 - `index.html` — static meta + OG + Organization/WebSite JSON-LD.
 - `src/App.tsx` — router + LocaleLayout (mounts CookieConsent). `src/seo.ts` — per-locale head.
 - `src/i18n/locales/{de,en}.ts` — **all UI copy** (parallel DE/EN).
-- `src/components/` — Nav, Hero, FlowDiagram, TrustBar, Services, HowItWorks, Referenzen, CTA, FAQ, Footer, CookieConsent, LegalPage, LanguageSwitcher, icons.
+- `src/components/` — Nav, Hero, FlowDiagram, TrustBar, Services, HowItWorks, Referenzen, CTA, FAQ, Footer, CookieConsent, DemoModal, LegalPage, LanguageSwitcher, icons.
 - `src/lib/{consent,analytics}.ts` — cookie consent + PostHog enable point.
 - `src/legal/{company,content}.ts` — company constants + legal text.
-- `public/{robots.txt,sitemap.xml,favicon.svg}` · `middleware.js` · `vercel.json`.
+- `public/{robots.txt,sitemap.xml,og-image.png,favicon.svg,motion.html,luumos-wordmark.png}` · `middleware.js` · `vercel.json`.
+- **Tests:** `TESTING.md` · `playwright.config.ts` · `tests/` · `scripts/test-archive.mjs` · `.githooks/pre-push` · `.github/workflows/e2e.yml` · `.mcp.json`.
 
 ## Log (newest first)
+### 2026-06-12 — "Live ansehen" video, OG image, copy polish, E2E harness
+- "Live ansehen" → lightbox modal playing an animated explainer (`public/motion.html`, DE/EN, typewriter Minuten→Stunden). Modal scales the fixed 1280×720 iframe from React (ResizeObserver) → fills with no letterbox.
+- OG/social image `public/og-image.png` (rendered via headless Chrome); un-gated og-image/robots/sitemap/favicon in `middleware.js`.
+- Copy-editing pass (DE/EN) — stripped dev-jargon for the ICP.
+- **Playwright E2E harness** ported from AIRLUXO + adapted (ports 4181/9381, no auth/data); specs in `tests/`, `TESTING.md`. All on `main`+`staging` (`ceba9f0`).
 ### 2026-06-11 — Referenzen, FAQ, SEO/GEO, cookie consent → deployed to prod
 - Referenzen carousel; header/footer section anchor-links; cookie-consent banner (analytics gated, PostHog-ready); FAQ + FAQPage schema; full SEO/GEO (meta/OG/JSON-LD/robots/sitemap, German keywords); scroll-reveal + press animations; mobile fixes; transparent logo; booking links. Promoted `staging`→`main` (`55b313a`).
 ### 2026-06-10 — git bootstrap + gated deploy setup
