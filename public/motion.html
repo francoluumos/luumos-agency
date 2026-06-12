@@ -257,7 +257,8 @@
 
       function fit() {
         var st = document.getElementById('stage')
-        st.style.setProperty('--s', Math.min(window.innerWidth / 1280, window.innerHeight / 720))
+        // cover (max) — the stage always fills the frame; tiny symmetric crop beats a gap
+        st.style.setProperty('--s', Math.max(window.innerWidth / 1280, window.innerHeight / 720))
       }
       addEventListener('resize', fit); fit()
 
