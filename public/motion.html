@@ -25,8 +25,9 @@
       .grid {
         position: absolute; inset: -40px; opacity: 0.5;
         background-image: linear-gradient(var(--line) 1px, transparent 1px), linear-gradient(90deg, var(--line) 1px, transparent 1px);
-        background-size: 64px 64px; -webkit-mask-image: radial-gradient(80% 80% at 50% 45%, #000 30%, transparent 75%);
-        mask-image: radial-gradient(80% 80% at 50% 45%, #000 30%, transparent 75%); animation: drift 24s linear infinite;
+        background-size: 64px 64px;
+        -webkit-mask-image: radial-gradient(110% 110% at 50% 50%, #000 62%, transparent 96%);
+        mask-image: radial-gradient(110% 110% at 50% 50%, #000 62%, transparent 96%); animation: drift 24s linear infinite;
       }
       @keyframes drift { to { transform: translate(64px, 64px); } }
       .auraA, .auraB { position: absolute; border-radius: 50%; filter: blur(10px); pointer-events: none; }
